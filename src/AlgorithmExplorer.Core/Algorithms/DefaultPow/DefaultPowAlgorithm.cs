@@ -33,4 +33,5 @@ public class DefaultPowAlgorithm : ICancellableAlgorithm<DefaultPowOptions, Defa
 
         return result;
     }
+
 }
