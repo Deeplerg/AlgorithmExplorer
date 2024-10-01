@@ -1,0 +1,14 @@
+{
+  "displayableAlgorithmOptions": {
+    "algorithms": [
+      {
+        "algorithmName": "sum",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      }
+    ]
+  }
+}
