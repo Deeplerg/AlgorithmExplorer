@@ -46,20 +46,18 @@ public partial class MainWindow : Window
             AlgListBox.Items.Add(alg);
         }
 
-
     }
 
-    private async Task StartButton_Click(object sender, RoutedEventArgs e)
+    private async void StartButton_Click(object sender, RoutedEventArgs e)
     {
         string alg = AlgListBox.SelectedItem as string;
         AlgorithmType algorithmType = Enum.Parse<AlgorithmType>(alg, ignoreCase: true);
 
-
-
         MainViewModel model = new MainViewModel();
 
-        model.GetGraphik(InputLength.Text, algorithmType, InputNumOfRep.Text, Provides, cts.Token);
-        MainPlot.Model = model.GetModel(model.MyModel);
+        model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text);
+
+        MainPlot.Model = model.MyModel;
     }
 
     private void ListViewItem_Selected(object sender, RoutedEventArgs e)

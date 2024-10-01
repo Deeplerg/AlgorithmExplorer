@@ -20,9 +20,9 @@ namespace AlgorithmExplorer.Desktop
     {
         public PlotModel MyModel { get; private set; }
 
-        public async Task GetGraphik( string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token)
+        public async Task GetGraphik( string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow)
         {
-            List<List<Core.Benchmarking.AlgorithmRunResult>> mainList = new();
+            List<List<Core.Benchmarking.AlgorithmRunResult>> mainList = new List<List<Core.Benchmarking.AlgorithmRunResult>>(int.Parse(count));
             for (int k = 0; k < int.Parse(count); k++)
             {
 
@@ -54,13 +54,7 @@ namespace AlgorithmExplorer.Desktop
                 var benchmarkResult = await executor.RunAsync(token);
 
                 mainList[k] = benchmarkResult.AlgorithmResults.ToList();
-/*
-                LineSeries lineSeries = new LineSeries();
-                for (int i = 1; i < int.Parse(vectorLength); i++)
-                {
-                    lineSeries.Points.Add(new DataPoint(i, list[i].TimeElapsed.TotalMilliseconds));
-                }
-*/
+
             }
 
             List<double> list = new(int.Parse(vectorLength));
@@ -75,9 +69,11 @@ namespace AlgorithmExplorer.Desktop
 
             for (int k = 0; k < list.Count(); k++)
             {
-                lineSeries.Points.Add(new DataPoint(k, list[k] / int.Parse(count)));
+                lineSeries.Points.Add(new DataPoint(k, (list[k] / int.Parse(count))));
             }
+            MyModel.Series.Clear();
             MyModel.Series.Add(lineSeries);
+            
         }
 
         public PlotModel GetModel(PlotModel model)
@@ -98,7 +94,7 @@ namespace AlgorithmExplorer.Desktop
         public MainViewModel()
         {
             MyModel = new PlotModel();
-
+            Points = new List<DataPoint>();
         }
     }
 }
