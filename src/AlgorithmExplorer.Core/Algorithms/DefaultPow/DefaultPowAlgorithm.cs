@@ -18,7 +18,7 @@ public class DefaultPowAlgorithm : ICancellableAlgorithm<DefaultPowOptions, Defa
             Result = new DefaultPowResult(result)
         };
     }
-    private static long AuxiliaryFunction(int number, int degree)
+    private static long AuxiliaryFunction(int degree, int number)
     {
         if (degree < 0)
         {

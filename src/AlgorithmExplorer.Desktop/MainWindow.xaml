@@ -21,7 +21,7 @@
         <Label x:Name="LableInpLen" Content="Введите длину вектора" HorizontalAlignment="Left" Margin="590,26,0,0" VerticalAlignment="Top" FontFamily="Verdana"/>
         <Label x:Name="LableInpNOR" Content="Введите кол-во повторений" HorizontalAlignment="Left" Margin="576,84,0,0" VerticalAlignment="Top" FontFamily="Verdana"/>
         <Label x:Name="LableAlg" Content="Выберите Алгоритм" HorizontalAlignment="Left" Margin="238,10,0,0" VerticalAlignment="Top" FontFamily="Verdana"/>
-        <Label Content="Введите основание &#xD;&#xA;степени" HorizontalAlignment="Left" Height="64" Margin="587,0,0,0" VerticalAlignment="Center" Width="248" FontFamily="Verdana"/>
+        <Label Content="Введите основание &#xD;&#xA;степени" Height="64" Margin="587,0,24,0" VerticalAlignment="Center" FontFamily="Verdana"/>
         <Button Content="Галя,ОТМЕНА" HorizontalAlignment="Left" Height="45" Margin="704,371,0,0" VerticalAlignment="Top" Width="143" Click="Button_Click"/>
         <TextBox x:Name="InputLength" HorizontalAlignment="Left" Height="37" Margin="616,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontFamily="Verdana"/>
         <TextBox x:Name="InputNOR" HorizontalAlignment="Left" Height="36" Margin="616,121,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontFamily="Verdana"/>
