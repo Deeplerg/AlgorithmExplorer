@@ -11,5 +11,8 @@ public enum AlgorithmType
     BitonicSort,
     TimSort,
     QuickSort,
-    DefaultPow
+    DefaultPow,
+    SimplePow,
+    QuickPow,
+    QuickPowClassic
 }
