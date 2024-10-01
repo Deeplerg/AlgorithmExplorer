@@ -14,6 +14,9 @@ using OxyPlot;
 using OxyPlot.Series;
 using OxyPlot.Wpf;
 using Microsoft.VisualBasic;
+using AlgorithmExplorer.Infrastructure.Configuration;
+using System.Configuration;
+using AlgorithmExplorer.Application.Providers.InputExecutors;
 
 namespace AlgorithmExplorer.Desktop;
 
@@ -22,19 +25,50 @@ namespace AlgorithmExplorer.Desktop;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    private IInputExecutorProvider Provides;
+
+    private CancellationTokenSource cts = new();
+
+    public MainWindow(IInputExecutorProvider input)
     {
         InitializeComponent();
+
+        Provides = input;
+
+        var algorithmNames = Enum.GetNames<AlgorithmType>();
+        AlgListBox.Items.Clear();
+
+        string noneName = Enum.GetName(AlgorithmType.None);
+
+        foreach (String alg in algorithmNames)
+        {
+            if (alg == noneName) continue;
+            AlgListBox.Items.Add(alg);
+        }
+
+
     }
 
-    private void StartButton_Click(object sender, RoutedEventArgs e)
+    private async Task StartButton_Click(object sender, RoutedEventArgs e)
     {
+        string alg = AlgListBox.SelectedItem as string;
+        AlgorithmType algorithmType = Enum.Parse<AlgorithmType>(alg, ignoreCase: true);
+
+
+
         MainViewModel model = new MainViewModel();
+
+        model.GetGraphik(InputLength.Text, algorithmType, InputNumOfRep.Text, Provides, cts.Token);
         MainPlot.Model = model.GetModel(model.MyModel);
     }
 
     private void ListViewItem_Selected(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        cts.Cancel();
     }
 }
