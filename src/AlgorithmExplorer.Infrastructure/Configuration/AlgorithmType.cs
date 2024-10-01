@@ -3,5 +3,13 @@
 public enum AlgorithmType
 {
     None = 0,
-    Sum
+    Sum,
+    Multiplication,
+    Polynom,
+    Gorner,
+    BubbleSort,
+    BitonicSort,
+    TimSort,
+    QuickSort,
+    DefaultPow
 }

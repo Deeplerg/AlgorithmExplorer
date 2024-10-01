@@ -8,6 +8,73 @@
             "displayName": "Iterations"
           }
         ]
+      },
+      {
+        "algorithmName": "multiplication",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "polynom",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "gorner",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "bubbleSort",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "bitonicSort",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "timSort",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "quickSort",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "defaultPow",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          },
+          {
+            "displayName": "Number"
+          }
+        ]
       }
     ]
   }

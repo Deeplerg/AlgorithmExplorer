@@ -1,4 +1,4 @@
 ﻿namespace AlgorithmExplorer.Application.ExecutionCoordinators.Base;
 
-public abstract record class CoordinatorOptionsBase(
+public record class CoordinatorOptionsBase(
     int IterationCount);
