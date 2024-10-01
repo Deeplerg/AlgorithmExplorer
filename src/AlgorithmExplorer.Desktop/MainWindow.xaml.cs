@@ -8,6 +8,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AlgorithmExplorer.Desktop;
+using AlgorithmExplorer;
+using OxyPlot;
+using OxyPlot.Series;
+using OxyPlot.Wpf;
+using Microsoft.VisualBasic;
 
 namespace AlgorithmExplorer.Desktop;
 
@@ -19,5 +25,16 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private void StartButton_Click(object sender, RoutedEventArgs e)
+    {
+        MainViewModel model = new MainViewModel();
+        MainPlot.Model = model.GetModel(model.MyModel);
+    }
+
+    private void ListViewItem_Selected(object sender, RoutedEventArgs e)
+    {
+
     }
 }
