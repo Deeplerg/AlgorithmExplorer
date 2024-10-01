@@ -1,4 +1,5 @@
-﻿using AlgorithmExplorer.Application.Models.Input;
+﻿using AlgorithmExplorer.Application.ExecutionCoordinators.Base;
+using AlgorithmExplorer.Application.Models.Input;
 using AlgorithmExplorer.Infrastructure.Configuration;
 
 namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordinatorOptions.Base;
@@ -22,6 +23,14 @@ public abstract class CoordinatorOptionsMapperBase<TOptions>(
     }
 
     protected abstract TOptions Map(IEnumerable<DisplayableOptionInput> inputs);
+    
+    protected virtual CoordinatorOptionsBase MapBase(IEnumerable<DisplayableOptionInput> inputs)
+    {
+        var iterationCount = MatchDisplayName(inputs, "iterations");
+        
+        return new CoordinatorOptionsBase(
+            IterationCount: int.Parse(iterationCount.Input));
+    }
     
     protected DisplayableOptionInput MatchDisplayName(IEnumerable<DisplayableOptionInput> inputs, string displayName)
         => inputs.First(x => 
