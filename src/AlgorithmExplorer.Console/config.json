@@ -75,6 +75,71 @@
             "displayName": "Number"
           }
         ]
+      },
+      {
+        "algorithmName": "simplePow",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          },
+          {
+            "displayName": "Number"
+          }
+        ]
+      },
+      {
+        "algorithmName": "quickPow",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          },
+          {
+            "displayName": "Number"
+          }
+        ]
+      },
+      {
+        "algorithmName": "recursivePow",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          },
+          {
+            "displayName": "Number"
+          }
+        ]
+      },
+      {
+        "algorithmName": "matrixMultiplication",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "kadane",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "const",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
+      },
+      {
+        "algorithmName": "lis",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          }
+        ]
       }
     ]
   }

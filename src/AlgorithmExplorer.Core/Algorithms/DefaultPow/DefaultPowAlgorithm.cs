@@ -20,18 +20,14 @@ public class DefaultPowAlgorithm : ICancellableAlgorithm<DefaultPowOptions, Defa
     }
     private static long AuxiliaryFunction(int degree, int number)
     {
-        if (degree < 0)
+        if(degree == 0)
         {
-            throw new ArgumentException("Degree cannot be negative");
+            return 1;
         }
-
-        long result = 1;
-        for (int i = 0; i < degree; i++)
+        else
         {
-            result *= number;
+            return number * AuxiliaryFunction(number, degree - 1);
         }
-
-        return result;
     }
 
 }

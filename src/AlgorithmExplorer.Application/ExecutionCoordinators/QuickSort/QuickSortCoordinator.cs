@@ -3,7 +3,7 @@ using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Algorithms.QuickSort;
 using AlgorithmExplorer.Core.Benchmarking;
 using AlgorithmExplorer.Core.DataGenerators;
-using AlgorithmExplorer.Core.DataGenerators.QuickSortAlgorithm;
+using AlgorithmExplorer.Core.DataGenerators.QuickSort;
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.QuickSort;
 

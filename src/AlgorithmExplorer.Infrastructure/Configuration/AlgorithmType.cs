@@ -14,5 +14,9 @@ public enum AlgorithmType
     DefaultPow,
     SimplePow,
     QuickPow,
-    QuickPowClassic
+    RecursivePow,
+    MatrixMultiplication,
+    Kadane,
+    Const,
+    LIS
 }

@@ -1,7 +1,7 @@
 ﻿using AlgorithmExplorer.Core.Algorithms.QuickSort;
 using AlgorithmExplorer.Core.DataGenerators.Base;
 
-namespace AlgorithmExplorer.Core.DataGenerators.QuickSortAlgorithm;
+namespace AlgorithmExplorer.Core.DataGenerators.QuickSort;
 
 public class QuickSortDataGenerator : NumberSequenceGenerator<QuickSortDataGeneratorOptions, QuickSortOptions>
 {
