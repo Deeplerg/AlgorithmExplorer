@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using OxyPlot;
 using OxyPlot.Series;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
@@ -42,6 +43,17 @@ namespace AlgorithmExplorer.Desktop
                     inputs.Inputs.Add(powOptionInput);
                 }
                 executor.SetInput(inputs);
+                var validationResult = executor.ValidateInput();
+                if (!validationResult.IsValid)
+                {
+                    string message = "Ошибка ввода данных!\n";
+                    foreach (var error in validationResult.Errors)
+                    {
+                        message += error.ErrorMessage + "\n";
+                    }
+                    MessageBox.Show(message);
+                    return;
+                }
                 bool prepared = await executor.PrepareDataAsync(token);
 
                 if (!prepared) continue;
