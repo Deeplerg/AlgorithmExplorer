@@ -56,7 +56,7 @@ public partial class MainWindow : Window
         MainViewModel model = new MainViewModel();
 
         cts = new();
-        model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text);
+        await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text);
         MainPlot.Model = model.MyModel;
     }
 
