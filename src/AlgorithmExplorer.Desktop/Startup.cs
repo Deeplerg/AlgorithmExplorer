@@ -13,7 +13,7 @@ public class Startup
     public IConfiguration ConfigureConfiguration()
     {
         var configBuilder = new ConfigurationBuilder();
-        configBuilder.AddJsonFile("config.json");
+        //configBuilder.AddJsonFile("config.json");
         var config = configBuilder.Build();
 
         return config;
@@ -31,7 +31,7 @@ public class Startup
 
         services.AddTransient<IWindowActivator, WindowActivator>();
 
-        services.Configure<DisplayableAlgorithmOptions>(config.GetSection("displayableAlgorithmOptions"));
+        //services.Configure<DisplayableAlgorithmOptions>(config.GetSection("displayableAlgorithmOptions"));
 
         return services;
     }

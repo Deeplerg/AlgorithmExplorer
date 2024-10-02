@@ -26,10 +26,4 @@
       <ProjectReference Include="..\AlgorithmExplorer.Core\AlgorithmExplorer.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Update="config.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
 </Project>
