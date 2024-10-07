@@ -19,6 +19,8 @@ namespace AlgorithmExplorer.Desktop
         public PlotModel MyModel { get; private set; }
         public IList<double> Points { get; private set; }
         public StringBuilder aprPolin {  get; private set; }
+        public double deviation { get; private set; }
+        private List<double> deviationApr = new List<double>();
 
         public MainViewModel()
         {
@@ -104,6 +106,11 @@ namespace AlgorithmExplorer.Desktop
             MyModel.Series.Add(lineSeries);
             AddPolynomialTrendLine(lineSeries, 2); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
+            for(int i = 0; i < Points.Count-1; i++)
+            {
+                deviation += (Points[i] + deviationApr[i]) / 2;
+            }
+            deviation /= Points.Count;
         }
 
         private void AddPolynomialTrendLine(LineSeries originalSeries, int degree)
@@ -135,6 +142,7 @@ namespace AlgorithmExplorer.Desktop
                         }
                     }
                 }
+                deviationApr.Add(trendY);
                 trendSeries.Points.Add(new DataPoint(xValues[i], trendY));
             }
             aprPolin = stringBuilder;

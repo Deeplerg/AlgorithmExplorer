@@ -28,5 +28,7 @@
         <TextBox x:Name="InputForPow" Height="39" Margin="0,160,78,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Right" Width="139"/>
         <Label x:Name="AprText" Height="42" Margin="0,368,195,0" VerticalAlignment="Top" Content="Функция" FontFamily="Verdana" RenderTransformOrigin="0.772,0.561" HorizontalAlignment="Right" Width="124"/>
         <TextBlock x:Name="TxBlApr" Margin="0,415,10,0" TextWrapping="Wrap" FontFamily="Verdana" Background="White" UseLayoutRounding="True" Height="151" VerticalAlignment="Top" HorizontalAlignment="Right" Width="309" DataContext="{Binding aprPolin}" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2,0,0,0"/>
+        <TextBlock x:Name="TxBlDeviation" HorizontalAlignment="Right" Height="66" Margin="0,288,195,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="124" Background="White" FontFamily="Verdana"/>
+        <Label Content="Отклонение" HorizontalAlignment="Right" Height="31" Margin="0,252,210,0" VerticalAlignment="Top" Width="109" FontFamily="Vivaldi"/>
     </Grid>
 </Window>
