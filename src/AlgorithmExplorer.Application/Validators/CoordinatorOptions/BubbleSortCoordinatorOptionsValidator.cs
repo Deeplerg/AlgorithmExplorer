@@ -1,12 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.BubbleSort;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class BubbleSortCoordinatorOptionsValidator : AbstractValidator<BubbleSortCoordinatorOptions>
+public class BubbleSortCoordinatorOptionsValidator 
+    : CoordinatorOptionsBaseValidator<BubbleSortCoordinatorOptions>
 {
-    public BubbleSortCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-    }
 }

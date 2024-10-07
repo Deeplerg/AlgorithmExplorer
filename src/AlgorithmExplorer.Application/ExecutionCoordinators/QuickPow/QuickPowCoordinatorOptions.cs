@@ -2,5 +2,6 @@
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.QuickPow;
 
-public record class QuickPowCoordinatorOptions(
-    int IterationCount, int Number) : CoordinatorOptionsBase(IterationCount);
+public class QuickPowCoordinatorOptions : PowCoordinatorOptionsBase
+{
+}

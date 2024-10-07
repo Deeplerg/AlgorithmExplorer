@@ -8,8 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class TimSortCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<TimSortCoordinatorOptions>(
         expectedType: AlgorithmType.TimSort,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override TimSortCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }

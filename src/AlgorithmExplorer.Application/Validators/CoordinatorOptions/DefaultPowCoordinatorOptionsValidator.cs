@@ -1,12 +1,9 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.DefaultPow;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
-public class DefaultPowCoordinatorOptionsValidator : AbstractValidator<DefaultPowCoordinatorOptions>
+public class DefaultPowCoordinatorOptionsValidator 
+    : PowCoordinatorOptionsBaseValidator<DefaultPowCoordinatorOptions>
 {
-    public DefaultPowCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-        RuleFor(x => x.Number).GreaterThan(0);
-    }
 }

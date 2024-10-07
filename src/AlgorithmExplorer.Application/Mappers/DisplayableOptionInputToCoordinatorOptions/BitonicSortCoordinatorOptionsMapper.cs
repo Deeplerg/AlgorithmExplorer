@@ -8,8 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class BitonicSortCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<BitonicSortCoordinatorOptions>(
         expectedType: AlgorithmType.BitonicSort,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override BitonicSortCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }

@@ -8,8 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class ConstCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<ConstCoordinatorOptions>(
         expectedType: AlgorithmType.Const,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override ConstCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }

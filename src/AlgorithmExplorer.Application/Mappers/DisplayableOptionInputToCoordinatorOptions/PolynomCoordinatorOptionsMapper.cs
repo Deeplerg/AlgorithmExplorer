@@ -8,8 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class PolynomCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<PolynomCoordinatorOptions>(
         expectedType: AlgorithmType.Polynom,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override PolynomCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }

@@ -1,12 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.Sum;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class SumCoordinatorOptionsValidator : AbstractValidator<SumCoordinatorOptions>
+public class SumCoordinatorOptionsValidator 
+    : CoordinatorOptionsBaseValidator<SumCoordinatorOptions>
 {
-    public SumCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-    }
 }

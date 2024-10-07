@@ -8,8 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class QuickSortCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<QuickSortCoordinatorOptions>(
         expectedType: AlgorithmType.QuickSort,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override QuickSortCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }

@@ -8,11 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class QuickPowCoordinatorOptionsMapper() :
     PowCoordinatorOptionsMapperBase<QuickPowCoordinatorOptions>(
         expectedType: AlgorithmType.QuickPow,
-        expectedInputCount: 2)
+        expectedInputCount: PowExpectedInputCount)
 {
     protected override QuickPowCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-    {
-        var displayableOptionInputs = inputs.ToList();
-        return new(MapBase(displayableOptionInputs).IterationCount, MapNumber(displayableOptionInputs));
-    }
+        => MapInherited(new(), inputs);
 }

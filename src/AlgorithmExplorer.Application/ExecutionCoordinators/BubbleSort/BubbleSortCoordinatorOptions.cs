@@ -2,5 +2,6 @@
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.BubbleSort;
 
-public record class BubbleSortCoordinatorOptions(
-    int IterationCount) : CoordinatorOptionsBase(IterationCount);
+public class BubbleSortCoordinatorOptions : CoordinatorOptionsBase
+{
+}

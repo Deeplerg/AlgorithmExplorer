@@ -1,12 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.QuickSort;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class QuickSortCoordinatorOptionsValidator : AbstractValidator<QuickSortCoordinatorOptions>
+public class QuickSortCoordinatorOptionsValidator 
+    : CoordinatorOptionsBaseValidator<QuickSortCoordinatorOptions>
 {
-    public QuickSortCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-    }
 }

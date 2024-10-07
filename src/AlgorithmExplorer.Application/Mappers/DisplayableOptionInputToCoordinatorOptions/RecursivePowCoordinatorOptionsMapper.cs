@@ -8,11 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class RecursivePowCoordinatorOptionsMapper() :
     PowCoordinatorOptionsMapperBase<RecursivePowCoordinatorOptions>(
         expectedType: AlgorithmType.RecursivePow,
-        expectedInputCount: 2)
+        expectedInputCount: PowExpectedInputCount)
 {
     protected override RecursivePowCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-    {
-        var displayableOptionInputs = inputs.ToList();
-        return new(MapBase(displayableOptionInputs).IterationCount, MapNumber(displayableOptionInputs));
-    }
+        => MapInherited(new(), inputs);
 }

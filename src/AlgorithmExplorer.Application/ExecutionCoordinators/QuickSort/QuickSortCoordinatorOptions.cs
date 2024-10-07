@@ -2,5 +2,6 @@
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.QuickSort;
 
-public record class QuickSortCoordinatorOptions(
-    int IterationCount) : CoordinatorOptionsBase(IterationCount);
+public class QuickSortCoordinatorOptions : CoordinatorOptionsBase
+{
+}

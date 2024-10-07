@@ -8,8 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class BubbleSortCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<BubbleSortCoordinatorOptions>(
         expectedType: AlgorithmType.BubbleSort,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override BubbleSortCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }

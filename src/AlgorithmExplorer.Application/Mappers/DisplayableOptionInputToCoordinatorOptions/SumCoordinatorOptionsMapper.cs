@@ -8,9 +8,9 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class SumCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<SumCoordinatorOptions>(
         expectedType: AlgorithmType.Sum,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override SumCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }
 
