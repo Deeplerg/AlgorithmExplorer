@@ -10,6 +10,7 @@ using AlgorithmExplorer.Application.Providers.InputExecutors;
 using AlgorithmExplorer.Infrastructure.Configuration;
 using AlgorithmExplorer.Application.Models.Input;
 using OxyPlot.Axes;
+using System.Text;
 
 namespace AlgorithmExplorer.Desktop
 {
@@ -17,6 +18,9 @@ namespace AlgorithmExplorer.Desktop
     {
         public PlotModel MyModel { get; private set; }
         public IList<double> Points { get; private set; }
+        public StringBuilder aprPolin {  get; private set; }
+        public double deviation { get; private set; }
+        private List<double> deviationApr = new List<double>();
 
         public MainViewModel()
         {
@@ -74,6 +78,7 @@ namespace AlgorithmExplorer.Desktop
                         list[k] += mainList[i][k].TimeElapsed.TotalMilliseconds; // Суммируем время
                     }
                 }
+              
                 list[k] /= runCount; // Усредняем
             }
 
@@ -85,15 +90,27 @@ namespace AlgorithmExplorer.Desktop
         {
             MyModel.Series.Clear();
             LineSeries lineSeries = new LineSeries();
-
+            Points[0] = Points[1];
             for (int i = 0; i < Points.Count; i++)
             {
+                if(i != 0 && i != Points.Count - 1)
+                {
+                    if (Math.Abs(Points[i] - Points[i - 1]) > 50 || Math.Abs(Points[i] - Points[i + 1]) > 50)
+                    {
+                        Points[i] = (Points[i - 1] + Points[i + 1]) / 2;
+                    }
+                }
                 lineSeries.Points.Add(new DataPoint(i, Points[i]));
             }
 
             MyModel.Series.Add(lineSeries);
             AddPolynomialTrendLine(lineSeries, 2); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
+            for(int i = 0; i < Points.Count-1; i++)
+            {
+                deviation += (Points[i] + deviationApr[i]) / 2;
+            }
+            deviation /= Points.Count;
         }
 
         private void AddPolynomialTrendLine(LineSeries originalSeries, int degree)
@@ -105,7 +122,9 @@ namespace AlgorithmExplorer.Desktop
 
             // Рассчитываем коэффициенты для полинома
             double[] coefficients = PolynomialRegression(xValues, yValues, degree);
-
+            
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("f(x)=");
             // Добавляем точки линии тренда
             for (int i = 0; i < xValues.Length; i++)
             {
@@ -113,9 +132,20 @@ namespace AlgorithmExplorer.Desktop
                 for (int j = 0; j <= degree; j++)
                 {
                     trendY += coefficients[j] * Math.Pow(xValues[i], j);
+                    if (i == 0)
+                    {
+                        stringBuilder.Append(coefficients[j]).Append(" * ").Append("x^").Append(j);
+
+                        if (j != degree)
+                        {
+                            stringBuilder.Append(" + ");
+                        }
+                    }
                 }
+                deviationApr.Add(trendY);
                 trendSeries.Points.Add(new DataPoint(xValues[i], trendY));
             }
+            aprPolin = stringBuilder;
 
             MyModel.Series.Add(trendSeries);
         }

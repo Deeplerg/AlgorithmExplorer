@@ -58,6 +58,9 @@ public partial class MainWindow : Window
         cts = new();
         await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text);
         MainPlot.Model = model.MyModel;
+
+        TxBlApr.Text = model.aprPolin.ToString();
+        TxBlDeviation.Text = model.deviation.ToString();
     }
 
     private void ListViewItem_Selected(object sender, RoutedEventArgs e)
