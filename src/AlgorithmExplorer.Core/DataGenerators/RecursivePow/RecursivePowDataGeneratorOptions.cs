@@ -1,3 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.RecursivePow;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class RecursivePowDataGeneratorOptions(int Count, int Number);
+namespace AlgorithmExplorer.Core.DataGenerators.RecursivePow;
+
+public class RecursivePowDataGeneratorOptions : PowDataGeneratorOptionsBase
+{
+    public RecursivePowDataGeneratorOptions()
+    {
+    }
+
+    public RecursivePowDataGeneratorOptions(int count, int number) : base(count, number)
+    {
+    }
+}

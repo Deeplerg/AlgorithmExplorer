@@ -11,11 +11,11 @@ public class SimplePowCoordinator(
     IDataGenerator<SimplePowDataGeneratorOptions, SimplePowOptions> generator,
     ICancellableAlgorithm<SimplePowOptions, SimplePowResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : PowCoordinatorBase<
         SimplePowCoordinatorOptions, SimplePowOptions, SimplePowResult, SimplePowDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override SimplePowDataGeneratorOptions ConstructGeneratorOptions(
         SimplePowCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration, options.Number);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

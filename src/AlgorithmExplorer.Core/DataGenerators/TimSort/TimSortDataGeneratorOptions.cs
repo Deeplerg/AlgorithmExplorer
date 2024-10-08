@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.TimSort;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class TimSortDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.TimSort;
+
+public class TimSortDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public TimSortDataGeneratorOptions()
+    {
+    }
+
+    public TimSortDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

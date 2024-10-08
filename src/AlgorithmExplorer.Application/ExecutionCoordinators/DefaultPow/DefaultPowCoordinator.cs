@@ -11,11 +11,11 @@ public class DefaultPowCoordinator(
     IDataGenerator<DefaultPowDataGeneratorOptions, DefaultPowOptions> generator,
     ICancellableAlgorithm<DefaultPowOptions, DefaultPowResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : PowCoordinatorBase<
         DefaultPowCoordinatorOptions, DefaultPowOptions, DefaultPowResult, DefaultPowDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override DefaultPowDataGeneratorOptions ConstructGeneratorOptions(
         DefaultPowCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration, options.Number);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

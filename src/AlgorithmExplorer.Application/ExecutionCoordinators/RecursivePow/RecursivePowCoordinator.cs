@@ -11,11 +11,11 @@ public class RecursivePowCoordinator(
     IDataGenerator<RecursivePowDataGeneratorOptions, RecursivePowOptions> generator,
     ICancellableAlgorithm<RecursivePowOptions, RecursivePowResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : PowCoordinatorBase<
         RecursivePowCoordinatorOptions, RecursivePowOptions, RecursivePowResult, RecursivePowDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override RecursivePowDataGeneratorOptions ConstructGeneratorOptions(
         RecursivePowCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration, options.Number);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

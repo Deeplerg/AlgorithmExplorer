@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.BubbleSort;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class BubbleSortDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.BubbleSort;
+
+public class BubbleSortDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public BubbleSortDataGeneratorOptions()
+    {
+    }
+
+    public BubbleSortDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

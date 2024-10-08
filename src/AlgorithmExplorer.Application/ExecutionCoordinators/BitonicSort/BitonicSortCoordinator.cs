@@ -17,7 +17,7 @@ public class BitonicSortCoordinator(
     protected override BitonicSortDataGeneratorOptions ConstructGeneratorOptions(
         BitonicSortCoordinatorOptions options,
         int currentIteration)
-        => new(FindClosestPowerOfTwo(currentIteration));
+        => new() { Count = FindClosestPowerOfTwo(currentIteration) };
     
     static int FindClosestPowerOfTwo(int value)
     {

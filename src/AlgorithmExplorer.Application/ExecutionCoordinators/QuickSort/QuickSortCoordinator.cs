@@ -11,11 +11,11 @@ public class QuickSortCoordinator(
     IDataGenerator<QuickSortDataGeneratorOptions, QuickSortOptions> generator,
     ICancellableAlgorithm<QuickSortOptions, QuickSortResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         QuickSortCoordinatorOptions, QuickSortOptions, QuickSortResult, QuickSortDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override QuickSortDataGeneratorOptions ConstructGeneratorOptions(
         QuickSortCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

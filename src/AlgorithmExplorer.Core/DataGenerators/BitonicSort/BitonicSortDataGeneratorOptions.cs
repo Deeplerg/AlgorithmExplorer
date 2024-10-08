@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.BitonicSort;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class BitonicSortDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.BitonicSort;
+
+public class BitonicSortDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public BitonicSortDataGeneratorOptions()
+    {
+    }
+
+    public BitonicSortDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

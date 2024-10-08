@@ -11,11 +11,11 @@ public class LISCoordinator(
     IDataGenerator<LISDataGeneratorOptions, LISOptions> generator,
     ICancellableAlgorithm<LISOptions, LISResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         LISCoordinatorOptions, LISOptions, LISResult, LISDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override LISDataGeneratorOptions ConstructGeneratorOptions(
         LISCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

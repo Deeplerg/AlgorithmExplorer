@@ -11,11 +11,11 @@ public class PolynomCoordinator(
     IDataGenerator<PolynomDataGeneratorOptions, PolynomOptions> generator,
     ICancellableAlgorithm<PolynomOptions, PolynomResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         PolynomCoordinatorOptions, PolynomOptions, PolynomResult, PolynomDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override PolynomDataGeneratorOptions ConstructGeneratorOptions(
         PolynomCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

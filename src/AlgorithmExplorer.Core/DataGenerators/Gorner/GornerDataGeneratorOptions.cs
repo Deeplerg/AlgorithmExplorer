@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.Gorner;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class GornerDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.Gorner;
+
+public class GornerDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public GornerDataGeneratorOptions()
+    {
+    }
+
+    public GornerDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

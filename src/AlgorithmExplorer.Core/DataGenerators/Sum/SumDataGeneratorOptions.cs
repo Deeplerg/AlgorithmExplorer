@@ -1,3 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.Sum;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class SumDataGeneratorOptions(int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.Sum;
+
+public class SumDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public SumDataGeneratorOptions()
+    {
+    }
+
+    public SumDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

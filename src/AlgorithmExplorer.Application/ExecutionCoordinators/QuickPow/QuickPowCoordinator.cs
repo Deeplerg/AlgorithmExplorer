@@ -11,11 +11,11 @@ public class QuickPowCoordinator(
     IDataGenerator<QuickPowDataGeneratorOptions, QuickPowOptions> generator,
     ICancellableAlgorithm<QuickPowOptions, QuickPowResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : PowCoordinatorBase<
         QuickPowCoordinatorOptions, QuickPowOptions, QuickPowResult, QuickPowDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override QuickPowDataGeneratorOptions ConstructGeneratorOptions(
         QuickPowCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration, options.Number);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

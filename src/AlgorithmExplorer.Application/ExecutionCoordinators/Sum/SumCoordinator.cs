@@ -11,11 +11,11 @@ public class SumCoordinator(
     IDataGenerator<SumDataGeneratorOptions, SumOptions> generator,
     ICancellableAlgorithm<SumOptions, SumResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         SumCoordinatorOptions, SumOptions, SumResult, SumDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override SumDataGeneratorOptions ConstructGeneratorOptions(
         SumCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

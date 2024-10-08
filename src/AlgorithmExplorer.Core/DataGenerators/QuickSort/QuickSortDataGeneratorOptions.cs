@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.QuickSort;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class QuickSortDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.QuickSort;
+
+public class QuickSortDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public QuickSortDataGeneratorOptions()
+    {
+    }
+
+    public QuickSortDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

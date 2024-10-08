@@ -1,3 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.DefaultPow;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class DefaultPowDataGeneratorOptions(int Count, int Number);
+namespace AlgorithmExplorer.Core.DataGenerators.DefaultPow;
+
+public class DefaultPowDataGeneratorOptions : PowDataGeneratorOptionsBase
+{
+    public DefaultPowDataGeneratorOptions()
+    {
+    }
+
+    public DefaultPowDataGeneratorOptions(int count, int number) : base(count, number)
+    {
+    }
+}

@@ -1,3 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.SimplePow;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class SimplePowDataGeneratorOptions(int Count, int Number);
+namespace AlgorithmExplorer.Core.DataGenerators.SimplePow;
+
+public class SimplePowDataGeneratorOptions : PowDataGeneratorOptionsBase
+{
+    public SimplePowDataGeneratorOptions()
+    {
+    }
+
+    public SimplePowDataGeneratorOptions(int count, int number) : base(count, number)
+    {
+    }
+}

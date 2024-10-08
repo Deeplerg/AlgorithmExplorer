@@ -11,11 +11,11 @@ public class KadaneCoordinator(
     IDataGenerator<KadaneDataGeneratorOptions, KadaneOptions> generator,
     ICancellableAlgorithm<KadaneOptions, KadaneResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         KadaneCoordinatorOptions, KadaneOptions, KadaneResult, KadaneDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override KadaneDataGeneratorOptions ConstructGeneratorOptions(
         KadaneCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

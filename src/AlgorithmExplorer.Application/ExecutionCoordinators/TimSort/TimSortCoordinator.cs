@@ -11,11 +11,11 @@ public class TimSortCoordinator(
     IDataGenerator<TimSortDataGeneratorOptions, TimSortOptions> generator,
     ICancellableAlgorithm<TimSortOptions, TimSortResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         TimSortCoordinatorOptions, TimSortOptions, TimSortResult, TimSortDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override TimSortDataGeneratorOptions ConstructGeneratorOptions(
         TimSortCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

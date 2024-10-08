@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using AlgorithmExplorer.Application.InputExecutors;
 using AlgorithmExplorer.Application.Models.Input;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
@@ -7,6 +8,8 @@ using AlgorithmExplorer.Infrastructure.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+
+Console.OutputEncoding = Encoding.Unicode;
 
 string filename = "config.json";
 string position = "displayableAlgorithmOptions";
@@ -97,6 +100,9 @@ if (!isPrepared)
     return;
 }
 
-var benchmarkResult = await executor.RunAsync(token);
+var progress = new Progress<BenchmarkProgressReport>();
+progress.ProgressChanged += (sender, report) => Console.WriteLine($"Done: {report.RunsCompleted}");
+
+var benchmarkResult = await executor.RunAsync(token, progress);
 Console.WriteLine($"Total Time: {benchmarkResult.TotalTimeElapsed}, " +
                   $"Average Time: {TimeSpan.FromTicks((long)benchmarkResult.AlgorithmResults.Average(x => x.TimeElapsed.Ticks))}");

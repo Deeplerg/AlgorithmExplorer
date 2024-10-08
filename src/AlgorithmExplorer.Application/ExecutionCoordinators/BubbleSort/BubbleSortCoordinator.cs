@@ -11,11 +11,11 @@ public class BubbleSortCoordinator(
     IDataGenerator<BubbleSortDataGeneratorOptions, BubbleSortOptions> generator,
     ICancellableAlgorithm<BubbleSortOptions, BubbleSortResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         BubbleSortCoordinatorOptions, BubbleSortOptions, BubbleSortResult, BubbleSortDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override BubbleSortDataGeneratorOptions ConstructGeneratorOptions(
         BubbleSortCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

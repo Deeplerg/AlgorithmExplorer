@@ -11,11 +11,11 @@ public class MultiplicationCoordinator(
     IDataGenerator<MultiplicationDataGeneratorOptions, MultiplicationOptions> generator,
     ICancellableAlgorithm<MultiplicationOptions, MultiplicationResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         MultiplicationCoordinatorOptions, MultiplicationOptions, MultiplicationResult, MultiplicationDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override MultiplicationDataGeneratorOptions ConstructGeneratorOptions(
         MultiplicationCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

@@ -7,6 +7,8 @@ public class CoordinatorOptionsBase
     }
 
     public int IterationCount { get; set; }
+    public int Step { get; set; }
+    public StepType StepType { get; set; }
 
     public void Deconstruct(out int iterationCount)
     {

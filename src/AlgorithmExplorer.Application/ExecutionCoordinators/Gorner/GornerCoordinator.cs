@@ -11,11 +11,11 @@ public class GornerCoordinator(
     IDataGenerator<GornerDataGeneratorOptions, GornerOptions> generator,
     ICancellableAlgorithm<GornerOptions, GornerResult> algorithm,
     ICancellableAlgorithmRunner runner)
-    : CoordinatorBase<
+    : SequenceCoordinatorBase<
         GornerCoordinatorOptions, GornerOptions, GornerResult, GornerDataGeneratorOptions>(generator, algorithm, runner)
 {
     protected override GornerDataGeneratorOptions ConstructGeneratorOptions(
         GornerCoordinatorOptions options,
         int currentIteration)
-        => new(currentIteration);
+        => ConstructInheritedGeneratorOptions(new(), options, currentIteration);
 }

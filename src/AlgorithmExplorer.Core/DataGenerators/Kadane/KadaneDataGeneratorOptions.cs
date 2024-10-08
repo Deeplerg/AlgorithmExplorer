@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.Kadane;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class KadaneDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.Kadane;
+
+public class KadaneDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public KadaneDataGeneratorOptions()
+    {
+    }
+
+    public KadaneDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

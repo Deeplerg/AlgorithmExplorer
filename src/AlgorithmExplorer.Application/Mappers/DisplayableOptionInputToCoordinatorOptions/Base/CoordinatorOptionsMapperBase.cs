@@ -9,7 +9,7 @@ public abstract class CoordinatorOptionsMapperBase<TOptions>(
     int expectedInputCount) : IMapper<DisplayableOptionInputs, TOptions>
     where TOptions : CoordinatorOptionsBase
 {
-    protected const int BaseExpectedInputCount = 1;
+    protected const int BaseExpectedInputCount = 3;
 
     public virtual TOptions Map(DisplayableOptionInputs inputs)
     {
@@ -29,11 +29,17 @@ public abstract class CoordinatorOptionsMapperBase<TOptions>(
     
     protected virtual CoordinatorOptionsBase MapBase(IEnumerable<DisplayableOptionInput> inputs)
     {
-        var iterationCount = MatchDisplayName(inputs, "iterations");
+        var enumeratedInputs = inputs.ToList();
+
+        var iterationCount = MatchDisplayName(enumeratedInputs, "iterations");
+        var step = MatchDisplayName(enumeratedInputs, "step");
+        var stepType = MatchDisplayName(enumeratedInputs, "stepType");
 
         return new CoordinatorOptionsBase
         {
-            IterationCount = int.Parse(iterationCount.Input)
+            IterationCount = int.Parse(iterationCount.Input),
+            Step = int.Parse(step.Input),
+            StepType = Enum.Parse<StepType>(stepType.Input, ignoreCase: true)
         };
     }
 
@@ -43,6 +49,8 @@ public abstract class CoordinatorOptionsMapperBase<TOptions>(
 
         var castOptions = (CoordinatorOptionsBase)emptyInheritedOptions;
         castOptions.IterationCount = @base.IterationCount;
+        castOptions.Step = @base.Step;
+        castOptions.StepType = @base.StepType;
 
         return (TOptions)castOptions;
     }

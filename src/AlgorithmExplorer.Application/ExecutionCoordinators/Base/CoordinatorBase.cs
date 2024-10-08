@@ -19,7 +19,7 @@ public abstract class CoordinatorBase<
 
     protected readonly List<TRunOptions> _data = new();
     
-    public CoordinatorBase(
+    protected CoordinatorBase(
         IDataGenerator<TDataGeneratorOptions, TRunOptions> generator,
         ICancellableAlgorithm<TRunOptions, TResult> algorithm,
         ICancellableAlgorithmRunner runner)
@@ -32,8 +32,9 @@ public abstract class CoordinatorBase<
     public virtual async Task<bool> PrepareDataAsync(TCoordinatorOptions options, CancellationToken token)
     {
         _data.Clear();
-        
-        for (int i = 1; i < options.IterationCount + 1; i++)
+
+        int cumulativeStep = options.Step;
+        for (int i = 1; i < options.IterationCount + 1; )
         {
             if (token.IsCancellationRequested)
             {
@@ -44,6 +45,25 @@ public abstract class CoordinatorBase<
             var generatorOptions = ConstructGeneratorOptions(options, i);
             var runOptions = await GenerateAsync(generatorOptions);
             _data.Add(runOptions);
+
+            switch (options.StepType)
+            {
+                case StepType.Additive:
+                    i += options.Step;
+                    break;
+
+                case StepType.Cumulative:
+                    i += cumulativeStep;
+                    break;
+
+                case StepType.Multiplicative:
+                    i *= options.Step;
+                    break;
+
+                default:
+                    throw new ArgumentException($"Unknown {nameof(StepType)} value: {options.StepType}");
+            }
+            cumulativeStep += options.Step;
         }
 
         return true;

@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.Polynom;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class PolynomDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.Polynom;
+
+public class PolynomDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public PolynomDataGeneratorOptions()
+    {
+    }
+
+    public PolynomDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}

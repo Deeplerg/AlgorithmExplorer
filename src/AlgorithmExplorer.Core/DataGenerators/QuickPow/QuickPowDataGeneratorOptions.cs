@@ -1,3 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.QuickPow;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class QuickPowDataGeneratorOptions(int Count, int Number);
+namespace AlgorithmExplorer.Core.DataGenerators.QuickPow;
+
+public class QuickPowDataGeneratorOptions : PowDataGeneratorOptionsBase
+{
+    public QuickPowDataGeneratorOptions()
+    {
+    }
+
+    public QuickPowDataGeneratorOptions(int count, int number) : base(count, number)
+    {
+    }
+}

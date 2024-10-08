@@ -1,4 +1,14 @@
-﻿namespace AlgorithmExplorer.Core.DataGenerators.Multiplication;
+﻿using AlgorithmExplorer.Core.DataGenerators.Base;
 
-public record class MultiplicationDataGeneratorOptions(
-    int Count);
+namespace AlgorithmExplorer.Core.DataGenerators.Multiplication;
+
+public class MultiplicationDataGeneratorOptions : SequenceDataGeneratorOptionsBase
+{
+    public MultiplicationDataGeneratorOptions()
+    {
+    }
+
+    public MultiplicationDataGeneratorOptions(int count) : base(count)
+    {
+    }
+}
