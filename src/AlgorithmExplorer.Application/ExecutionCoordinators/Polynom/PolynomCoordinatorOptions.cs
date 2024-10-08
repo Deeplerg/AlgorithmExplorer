@@ -2,5 +2,6 @@
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.Polynom;
 
-public record class PolynomCoordinatorOptions(
-    int IterationCount) : CoordinatorOptionsBase(IterationCount);
+public class PolynomCoordinatorOptions : CoordinatorOptionsBase
+{
+}

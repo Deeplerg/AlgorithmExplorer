@@ -2,5 +2,6 @@
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.LIS;
 
-public record class LISCoordinatorOptions(
-    int IterationCount) : CoordinatorOptionsBase(IterationCount);
+public class LISCoordinatorOptions : CoordinatorOptionsBase
+{
+}

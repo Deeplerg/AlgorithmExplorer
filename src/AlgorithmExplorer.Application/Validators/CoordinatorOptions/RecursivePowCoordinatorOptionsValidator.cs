@@ -1,13 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.RecursivePow;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class RecursivePowCoordinatorOptionsValidator : AbstractValidator<RecursivePowCoordinatorOptions>
+public class RecursivePowCoordinatorOptionsValidator 
+    : PowCoordinatorOptionsBaseValidator<RecursivePowCoordinatorOptions>
 {
-    public RecursivePowCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-        RuleFor(x => x.Number).GreaterThan(0);
-    }
 }

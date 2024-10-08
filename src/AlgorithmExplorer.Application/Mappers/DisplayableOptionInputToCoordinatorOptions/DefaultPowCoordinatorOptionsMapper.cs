@@ -8,11 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class DefaultPowCoordinatorOptionsMapper() :
     PowCoordinatorOptionsMapperBase<DefaultPowCoordinatorOptions>(
         expectedType: AlgorithmType.DefaultPow,
-        expectedInputCount: 2)
+        expectedInputCount: PowExpectedInputCount)
 {
     protected override DefaultPowCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-    {
-        var displayableOptionInputs = inputs.ToList();
-        return new(MapBase(displayableOptionInputs).IterationCount, MapNumber(displayableOptionInputs));
-    }
+        => MapInherited(new(), inputs);
 }

@@ -1,12 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.Polynom;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class PolynomCoordinatorOptionsValidator : AbstractValidator<PolynomCoordinatorOptions>
+public class PolynomCoordinatorOptionsValidator 
+    : CoordinatorOptionsBaseValidator<PolynomCoordinatorOptions>
 {
-    public PolynomCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-    }
 }

@@ -1,13 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.QuickPow;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class QuickPowCoordinatorOptionsValidator : AbstractValidator<QuickPowCoordinatorOptions>
+public class QuickPowCoordinatorOptionsValidator 
+    : PowCoordinatorOptionsBaseValidator<QuickPowCoordinatorOptions>
 {
-    public QuickPowCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-        RuleFor(x => x.Number).GreaterThan(0);
-    }
 }

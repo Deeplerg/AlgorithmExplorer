@@ -2,5 +2,6 @@
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.TimSort;
 
-public record class TimSortCoordinatorOptions(
-    int IterationCount) : CoordinatorOptionsBase(IterationCount);
+public class TimSortCoordinatorOptions : CoordinatorOptionsBase
+{
+}

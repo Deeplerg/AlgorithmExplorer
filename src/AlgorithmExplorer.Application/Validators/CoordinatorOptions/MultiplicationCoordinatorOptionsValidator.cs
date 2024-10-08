@@ -1,12 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.Multiplication;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class MultiplicationCoordinatorOptionsValidator : AbstractValidator<MultiplicationCoordinatorOptions>
+public class MultiplicationCoordinatorOptionsValidator 
+    : CoordinatorOptionsBaseValidator<MultiplicationCoordinatorOptions>
 {
-    public MultiplicationCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-    }
 }

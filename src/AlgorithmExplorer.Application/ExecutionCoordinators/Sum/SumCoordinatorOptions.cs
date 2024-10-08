@@ -2,5 +2,6 @@
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.Sum;
 
-public record class SumCoordinatorOptions(
-    int IterationCount) : CoordinatorOptionsBase(IterationCount);
+public class SumCoordinatorOptions : CoordinatorOptionsBase
+{
+}

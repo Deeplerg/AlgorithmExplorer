@@ -42,7 +42,7 @@ namespace AlgorithmExplorer.Desktop
                 var powOptionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "number" }, inpForPow);
                 var optionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "iterations" }, vectorLength);
                 var inputs = new DisplayableOptionInputs(alg, new List<DisplayableOptionInput> { optionInput });
-                if(alg is AlgorithmType.DefaultPow || alg is AlgorithmType.QuickPow || alg is AlgorithmType.RecursivePow || alg is AlgorithmType.SimplePow)
+                if(alg is AlgorithmType.DefaultPow or AlgorithmType.QuickPow or AlgorithmType.RecursivePow or AlgorithmType.SimplePow)
                 {
                     inputs.Inputs.Add(powOptionInput);
                 }

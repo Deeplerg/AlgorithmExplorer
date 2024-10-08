@@ -1,12 +1,10 @@
 ﻿using AlgorithmExplorer.Application.ExecutionCoordinators.Kadane;
+using AlgorithmExplorer.Application.Validators.CoordinatorOptions.Base;
 using FluentValidation;
 
 namespace AlgorithmExplorer.Application.Validators.CoordinatorOptions;
 
-public class KadaneCoordinatorOptionsValidator : AbstractValidator<KadaneCoordinatorOptions>
+public class KadaneCoordinatorOptionsValidator 
+    : CoordinatorOptionsBaseValidator<KadaneCoordinatorOptions>
 {
-    public KadaneCoordinatorOptionsValidator()
-    {
-        RuleFor(x => x.IterationCount).GreaterThan(0);
-    }
 }

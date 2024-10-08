@@ -8,8 +8,8 @@ namespace AlgorithmExplorer.Application.Mappers.DisplayableOptionInputToCoordina
 public class MultiplicationCoordinatorOptionsMapper() :
     CoordinatorOptionsMapperBase<MultiplicationCoordinatorOptions>(
         expectedType: AlgorithmType.Multiplication,
-        expectedInputCount: 1)
+        expectedInputCount: BaseExpectedInputCount)
 {
     protected override MultiplicationCoordinatorOptions Map(IEnumerable<DisplayableOptionInput> inputs)
-        => new(MapBase(inputs).IterationCount);
+        => MapInherited(new(), inputs);
 }
