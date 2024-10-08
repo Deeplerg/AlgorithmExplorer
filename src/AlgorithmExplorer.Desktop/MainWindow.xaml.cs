@@ -50,17 +50,29 @@ public partial class MainWindow : Window
 
     private async void StartButton_Click(object sender, RoutedEventArgs e)
     {
-        string alg = AlgListBox.SelectedItem as string;
-        AlgorithmType algorithmType = Enum.Parse<AlgorithmType>(alg, ignoreCase: true);
-
+        if (!AlgListBox.SelectedItem is null)
+        {
+            string alg = AlgListBox.SelectedItem as string;
+            AlgorithmType algorithmType = Enum.Parse<AlgorithmType>(alg, ignoreCase: true);
+        }
+        else
+        {
+            MassageBox.Text = "!!!";
+        }
         MainViewModel model = new MainViewModel();
+        if (int.TryParse(InputLength.Text) && int.TryParse(InputNOR.Text))
+        {
+            cts = new();
+            await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text);
+            MainPlot.Model = model.MyModel;
 
-        cts = new();
-        await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text);
-        MainPlot.Model = model.MyModel;
-
-        TxBlApr.Text = model.aprPolin.ToString();
-        TxBlDeviation.Text = model.deviation.ToString();
+            TxBlApr.Text = model.aprPolin.ToString();
+            TxBlDeviation.Text = model.deviation.ToString();
+        }
+        else
+        {
+            MassageBox.Text = "";
+        }
     }
 
     private void ListViewItem_Selected(object sender, RoutedEventArgs e)
