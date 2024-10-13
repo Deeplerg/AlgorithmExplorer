@@ -6,7 +6,7 @@ public interface ICancellableAlgorithmRunner
 {
     Task<BenchmarkResult> RunAsync<TAlgorithm, TRunOptions, TResult>(
         TAlgorithm algorithm, 
-        IEnumerable<TRunOptions> options,
+        IEnumerable<NumberedRunOptions<TRunOptions>> options,
         CancellationToken cancellationToken,
         IProgress<BenchmarkProgressReport>? progress = null)
         where TAlgorithm : ICancellableAlgorithm<TRunOptions, TResult>

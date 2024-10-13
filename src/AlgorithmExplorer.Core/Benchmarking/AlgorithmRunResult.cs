@@ -4,4 +4,5 @@ namespace AlgorithmExplorer.Core.Benchmarking;
 
 public record class AlgorithmRunResult(
     TimeSpan TimeElapsed,
-    bool IsCancelled);
+    bool IsCancelled,
+    int DataLength);
