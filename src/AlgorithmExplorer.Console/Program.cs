@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using AlgorithmExplorer.Application.ExecutionCoordinators.Base;
 using AlgorithmExplorer.Application.InputExecutors;
 using AlgorithmExplorer.Application.Models.Input;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
@@ -46,6 +47,24 @@ foreach (var name in algorithmNames)
 {
     Console.WriteLine(name);
 }
+Console.WriteLine();
+
+var stepNames = Enum.GetNames<StepType>();
+Console.WriteLine("Available step types:");
+foreach (var name in stepNames)
+{
+    Console.WriteLine(name);
+}
+Console.WriteLine();
+
+string reportProgressInput;
+do
+{
+    Console.Write("Report progress? (Y/N) ");
+    reportProgressInput = Console.ReadLine()!;
+} while (reportProgressInput != "Y" && reportProgressInput != "N");
+
+bool shouldReportProgress = reportProgressInput == "Y";
 
 Console.Write("Algorithm: ");
 string algorithmInput = Console.ReadLine()!;
@@ -59,15 +78,15 @@ if (!isParsed || algorithmObject is null || (AlgorithmType)algorithmObject == Al
 var algorithm = (AlgorithmType)algorithmObject;
 
 
-var sumOption = options.Value.Algorithms.First(x => x.AlgorithmName == algorithm);
+var displayableAlgorithmOption = options.Value.Algorithms.First(x => x.AlgorithmName == algorithm);
 List<DisplayableOptionInput> inputOptions = new();
-foreach (var dispayableOption in sumOption.DisplayableCoordinatorOptions)
+foreach (var dispayableOption in displayableAlgorithmOption.DisplayableCoordinatorOptions)
 {
     Console.Write("\n" + dispayableOption.DisplayName + ": ");
     string input = Console.ReadLine()!;
     inputOptions.Add(new DisplayableOptionInput(dispayableOption, input));
 }
-var inputs = new DisplayableOptionInputs(sumOption.AlgorithmName, inputOptions);
+var inputs = new DisplayableOptionInputs(displayableAlgorithmOption.AlgorithmName, inputOptions);
 
 
 var executorProvider = provider.GetRequiredService<IInputExecutorProvider>();
@@ -100,8 +119,12 @@ if (!isPrepared)
     return;
 }
 
-var progress = new Progress<BenchmarkProgressReport>();
-progress.ProgressChanged += (sender, report) => Console.WriteLine($"Done: {report.RunsCompleted}");
+Progress<BenchmarkProgressReport> progress = null!;
+if (shouldReportProgress)
+{
+    progress = new Progress<BenchmarkProgressReport>();
+    progress.ProgressChanged += (sender, report) => Console.WriteLine($"Done: {report.RunsCompleted}");
+}
 
 var benchmarkResult = await executor.RunAsync(token, progress);
 Console.WriteLine($"Total Time: {benchmarkResult.TotalTimeElapsed}, " +
