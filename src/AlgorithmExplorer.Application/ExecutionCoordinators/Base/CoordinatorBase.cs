@@ -33,9 +33,14 @@ public abstract class CoordinatorBase<
     {
         _data.Clear();
 
+        int iterations = options.IterationCount;
         int cumulativeStep = options.Step;
-        for (int i = 1; i < options.IterationCount + 1; )
+        bool addedMaxIteration = false;
+        for (int i = 1; i < iterations + 1; )
         {
+            if (i == iterations)
+                addedMaxIteration = true;
+            
             if (token.IsCancellationRequested)
             {
                 _data.Clear();
@@ -64,6 +69,13 @@ public abstract class CoordinatorBase<
                     throw new ArgumentException($"Unknown {nameof(StepType)} value: {options.StepType}");
             }
             cumulativeStep += options.Step;
+        }
+
+        if (!addedMaxIteration)
+        {
+            var generatorOptions = ConstructGeneratorOptions(options, iterations);
+            var runOptions = await GenerateAsync(generatorOptions);
+            _data.Add(runOptions);
         }
 
         return true;
