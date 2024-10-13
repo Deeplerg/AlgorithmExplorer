@@ -102,7 +102,7 @@ public partial class MainWindow : Window
                 MainPlot.Model = model.MyModel;
 
                 TxBlApr.Text = model.aprPolin.ToString();
-                TxBlDeviation.Text = model.deviation.ToString();
+               TxBlDeviation.Text = model.deviation.ToString();
             }
         }
         else

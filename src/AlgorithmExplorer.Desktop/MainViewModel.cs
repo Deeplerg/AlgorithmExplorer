@@ -19,9 +19,11 @@ namespace AlgorithmExplorer.Desktop
     {
         public PlotModel MyModel { get; private set; }
         public IList<double> Points { get; private set; }
-        public StringBuilder aprPolin {  get; private set; }
+        public StringBuilder aprPolin { get; private set; }
         public double deviation { get; private set; }
-        private List<double> deviationApr = new List<double>();
+        private List<double> deviationApr = new List<double>(1);
+        private StepType stepType;
+        private int vectorLen;
 
         public MainViewModel()
         {
@@ -29,26 +31,27 @@ namespace AlgorithmExplorer.Desktop
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Размер вектора" });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Время (мс)" });
             Points = new List<double>();
+            deviationApr.Add(0);
         }
 
         public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType)
         {
             List<List<Core.Benchmarking.AlgorithmRunResult>> mainList = new();
-            int vectorLen = int.Parse(vectorLength);
+            vectorLen = int.Parse(vectorLength);
             int runCount = int.Parse(count);
-
+            stepType = Enum.Parse<StepType>(inpStepType);
             for (int k = 0; k < runCount; k++)
             {
                 var executor = inputData.GetByAlgorithm(alg)!;
                 var powOptionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "number" }, inpForPow);
                 var optionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "iterations" }, vectorLength);
                 var stepOption = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "Step" }, inpStartStep);
-                var stepType = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "StepType"}, inpStepType);
+                var stepType = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "StepType" }, inpStepType);
                 var inputs = new DisplayableOptionInputs(alg, new List<DisplayableOptionInput> { optionInput });
                 inputs.Inputs.Add(stepOption);
                 inputs.Inputs.Add(stepType);
-                
-                if(alg is AlgorithmType.DefaultPow or AlgorithmType.QuickPow or AlgorithmType.RecursivePow or AlgorithmType.SimplePow)
+
+                if (alg is AlgorithmType.DefaultPow or AlgorithmType.QuickPow or AlgorithmType.RecursivePow or AlgorithmType.SimplePow)
                 {
                     inputs.Inputs.Add(powOptionInput);
                 }
@@ -74,84 +77,98 @@ namespace AlgorithmExplorer.Desktop
 
             double[] list = new double[vectorLen];
 
-            int step = int.Parse(inpStartStep);
-            int iterationNumber = 0;
 
-            for (int k = 0; k < vectorLen; k += step)
+            for (int step = 0; step < vectorLen; step++)
             {
-                list[iterationNumber] = 0;
+                list[step] = 0;
                 for (int i = 0; i < runCount; i++)
                 {
-                    if (i < mainList.Count && k < mainList[i].Count)
+                    if (i < mainList.Count && step < mainList[i].Count)
                     {
-                        list[iterationNumber] += mainList[i][k].TimeElapsed.TotalMilliseconds; // Суммируем время
+                        list[step] += mainList[i][step].TimeElapsed.TotalMilliseconds; // Суммируем время
                     }
                 }
-              
-                list[iterationNumber] /= runCount; // Усредняем
-
-                step = GetStep(step, inpStepType, iterationNumber);
-                iterationNumber++;
+                list[step] /= runCount; // Усредняем
             }
-
+            list[list.Length - 1] = mainList[0].Last().TimeElapsed.TotalMilliseconds;//[mainList[0].Count() - 1].TimeElapsed.TotalMilliseconds;
             Points = list.ToList();
-            UpdatePlot( int.Parse(inpStartStep), inpStepType);
+            UpdatePlot(int.Parse(inpStartStep));
         }
 
-        private int GetStep(int startStep, string stepType, int iterationNumber)
+        private int GetStep(int startStep, int iterationNumber)
         {
-            if (stepType == "Additive")
+            if (stepType is StepType.Additive)
             {
-                startStep += 10 * (iterationNumber + 1);
+                startStep += 0;
             }
-            else if (stepType == "Cumulative")
+            else if (stepType is StepType.Cumulative)
             {
-
+                startStep *= 2;
             }
             else
             {
-                startStep *= (int)Math.Pow(10, iterationNumber);
+                startStep *= (int)Math.Pow(3, iterationNumber);
             }
             return startStep;
         }
 
-        private void UpdatePlot( int startStep, string stepType)
+        private void UpdatePlot(int startStep)
         {
             MyModel.Series.Clear();
             LineSeries lineSeries = new LineSeries();
-            Points[0] = Points[1];
-            for (int i = 0; i < Points.Count; i++)
+            Points[0] = Points[startStep];
+            int iterationNumber = 0;
+            int step = startStep;
+            for (int i = 0; i < vectorLen; i += step)
             {
-                if (Points[i] == 0 && i != 0)
+                step = GetStep(step, iterationNumber);
+                if (Points[iterationNumber] == 0 && i != 0)
                 {
-                    break;
+                    continue;
                 }
-                lineSeries.Points.Add(new DataPoint(GetStep(startStep, stepType, i), Points[i]));
-                startStep = GetStep(startStep, stepType, i);
+                lineSeries.Points.Add(new DataPoint(i, Points[iterationNumber]));
+                iterationNumber++;
             }
 
             MyModel.Series.Add(lineSeries);
-            AddPolynomialTrendLine(lineSeries, 2); // 2 - это степень полинома
+            AddPolynomialTrendLine(lineSeries, 2, startStep); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
-            for(int i = 0; i < Points.Count-1; i++)
+            for (int i = 0; i < deviationApr.Count - 1; i++)
             {
                 deviation += (Points[i] + deviationApr[i]) / 2;
             }
             deviation /= Points.Count;
         }
 
-        private void AddPolynomialTrendLine(LineSeries originalSeries, int degree)
+
+        private void AddPolynomialTrendLine(LineSeries originalSeries, int degree, int startStep)
         {
             var trendSeries = new LineSeries { Title = "Линия тренда", StrokeThickness = 2, Color = OxyColors.Red };
 
-            double[] xValues = Enumerable.Range(0, Points.Count).Select(i => (double)i).ToArray();
-            double[] yValues = Points.ToArray();
+            // Используем динамический шаг
+            List<double> xValuesList = new List<double>();
+            List<double> yValuesList = new List<double>();
+            int step = startStep;
+            int iterationNumber = 0;
+            for (int i = 0; i < Points.Count; i += step)
+            {
+                step = GetStep(step, iterationNumber); 
+                xValuesList.Add(i);
+                yValuesList.Add(Points[iterationNumber]);
+                iterationNumber++;
+            }
+            double[] xValues = xValuesList.ToArray();
+            double[] yValues = yValuesList.ToArray();
 
             // Рассчитываем коэффициенты для полинома
             double[] coefficients = PolynomialRegression(xValues, yValues, degree);
-            
+
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("f(x)=");
+
+            deviationApr.Clear(); // Очищаем список отклонений перед новым расчетом
+            deviationApr.Add(0);  // Добавляем 0 для первой точки
+
             // Добавляем точки линии тренда
             for (int i = 0; i < xValues.Length; i++)
             {
@@ -159,27 +176,36 @@ namespace AlgorithmExplorer.Desktop
                 for (int j = 0; j <= degree; j++)
                 {
                     trendY += coefficients[j] * Math.Pow(xValues[i], j);
-                    if (i == 0)
+                    if (i == 0 && j == 0)
                     {
-                        stringBuilder.Append(coefficients[j]).Append(" * ").Append("x^").Append(j);
-
-                        if (j != degree)
-                        {
-                            stringBuilder.Append(" + ");
-                        }
+                        stringBuilder.Append(coefficients[j]);
+                    }
+                    else if (i == 0)
+                    {
+                        stringBuilder.Append(" + ").Append(coefficients[j]).Append(" * x^").Append(j);
                     }
                 }
-                deviationApr.Add(trendY);
+
                 trendSeries.Points.Add(new DataPoint(xValues[i], trendY));
+
+                // Сохраняем отклонения
+                if (i < Points.Count)
+                {
+                    deviationApr.Add(Points[(int)xValues[i]] - trendY);
+                }
             }
+
             aprPolin = stringBuilder;
 
             MyModel.Series.Add(trendSeries);
         }
 
+
+
         private double[] PolynomialRegression(double[] x, double[] y, int degree)
         {
             int n = x.Length;
+
             var X = new double[n, degree + 1];
 
             for (int i = 0; i < n; i++)
