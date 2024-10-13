@@ -122,10 +122,6 @@ namespace AlgorithmExplorer.Desktop
             for (int i = 0; i < vectorLen; i += step)
             {
                 step = GetStep(step, iterationNumber);
-                if (Points[iterationNumber] == 0 && i != 0)
-                {
-                    continue;
-                }
                 lineSeries.Points.Add(new DataPoint(i, Points[iterationNumber]));
                 iterationNumber++;
             }
