@@ -1,5 +1,6 @@
 ﻿using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 
 namespace AlgorithmExplorer.Application.ExecutionCoordinators.Base;
@@ -15,14 +16,14 @@ public abstract class CoordinatorBase<
 {
     protected readonly IDataGenerator<TDataGeneratorOptions, TRunOptions> _generator;
     protected readonly ICancellableAlgorithm<TRunOptions, TResult> _algorithm;
-    protected readonly ICancellableAlgorithmRunner _runner;
+    protected readonly ITimeAlgorithmRunner _runner;
 
     protected readonly List<NumberedRunOptions<TRunOptions>> _data = new();
     
     protected CoordinatorBase(
         IDataGenerator<TDataGeneratorOptions, TRunOptions> generator,
         ICancellableAlgorithm<TRunOptions, TResult> algorithm,
-        ICancellableAlgorithmRunner runner)
+        ITimeAlgorithmRunner runner)
     {
         _generator = generator;
         _algorithm = algorithm;
@@ -33,12 +34,13 @@ public abstract class CoordinatorBase<
     {
         _data.Clear();
 
-        int iterations = options.IterationCount;
+        int totalIterations = options.IterationCount;
         int cumulativeStep = options.Step;
         bool addedMaxIteration = false;
-        for (int i = 1; i < iterations + 1; )
+        
+        for (int i = 1; i < totalIterations + 1; )
         {
-            if (i == iterations)
+            if (i == totalIterations)
                 addedMaxIteration = true;
             
             if (token.IsCancellationRequested)
@@ -47,10 +49,8 @@ public abstract class CoordinatorBase<
                 return false;
             }
 
-            var generatorOptions = ConstructGeneratorOptions(options, i);
-            var runOptions = await GenerateAsync(generatorOptions);
-            var numberedRunOptions = new NumberedRunOptions<TRunOptions>(runOptions, i);
-            _data.Add(numberedRunOptions);
+            var runOptions = await GenerateRunOptionsAsync(options, i);
+            _data.Add(runOptions);
 
             switch (options.StepType)
             {
@@ -74,23 +74,24 @@ public abstract class CoordinatorBase<
 
         if (!addedMaxIteration)
         {
-            var generatorOptions = ConstructGeneratorOptions(options, iterations);
-            var runOptions = await GenerateAsync(generatorOptions);
-            var numberedRunOptions = new NumberedRunOptions<TRunOptions>(runOptions, iterations);
-            _data.Add(numberedRunOptions);
+            var runOptions = await GenerateRunOptionsAsync(options, totalIterations);
+            _data.Add(runOptions);
         }
 
         return true;
     }
 
-    public virtual async Task<BenchmarkResult> RunAsync(
+    public virtual async Task<TimeBenchmarkResult> RunAsync(
         CancellationToken token,
         IProgress<BenchmarkProgressReport>? progress = null)
     {
         if (!_data.Any()) throw new InvalidOperationException("Data has not been generated yet.");
+
+        var runnerOptions = new TimeRunnerOptions<ICancellableAlgorithm<TRunOptions, TResult>, TRunOptions, TResult>(
+            _algorithm, _data);
         
-        var runResult = await _runner.RunAsync<ICancellableAlgorithm<TRunOptions, TResult>, TRunOptions, TResult>(
-            _algorithm, _data, token, progress);
+        var runResult = await _runner.RunAsync(
+            runnerOptions, token, progress);
 
         return runResult;
     }
@@ -101,5 +102,12 @@ public abstract class CoordinatorBase<
     protected virtual async Task<TRunOptions> GenerateAsync(TDataGeneratorOptions options)
     {
         return await Task.Run(() => _generator.Generate(options));
+    }
+    
+    private async Task<NumberedRunOptions<TRunOptions>> GenerateRunOptionsAsync(TCoordinatorOptions options, int iteration)
+    {
+        var generatorOptions = ConstructGeneratorOptions(options, iteration);
+        var runOptions = await GenerateAsync(generatorOptions);
+        return new NumberedRunOptions<TRunOptions>(runOptions, iteration);
     }
 }

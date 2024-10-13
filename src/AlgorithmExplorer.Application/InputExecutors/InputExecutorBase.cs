@@ -2,6 +2,7 @@
 using AlgorithmExplorer.Application.Mappers;
 using AlgorithmExplorer.Application.Models.Input;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -26,7 +27,7 @@ public class InputExecutorBase<TCoordinatorOptions> : IInputExecutor
         _coordinator = coordinator;
     }
     
-    public BenchmarkResult? BenchmarkResult { get; protected set; } = null;
+    public TimeBenchmarkResult? BenchmarkResult { get; protected set; } = null;
     
     public virtual void SetInput(DisplayableOptionInputs inputs)
     {
@@ -47,7 +48,7 @@ public class InputExecutorBase<TCoordinatorOptions> : IInputExecutor
         return await _coordinator.PrepareDataAsync(_input!, cancellationToken);
     }
 
-    public virtual async Task<BenchmarkResult> RunAsync(CancellationToken cancellationToken, IProgress<BenchmarkProgressReport>? progress = null)
+    public virtual async Task<TimeBenchmarkResult> RunAsync(CancellationToken cancellationToken, IProgress<BenchmarkProgressReport>? progress = null)
     {
         GuardAgainstInputNull();
 

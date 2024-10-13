@@ -12,6 +12,7 @@ using AlgorithmExplorer.Application.Models.Input;
 using OxyPlot.Axes;
 using System.Text;
 using AlgorithmExplorer.Application.ExecutionCoordinators.Base;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 
 namespace AlgorithmExplorer.Desktop
 {
@@ -36,7 +37,7 @@ namespace AlgorithmExplorer.Desktop
 
         public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType)
         {
-            List<List<Core.Benchmarking.AlgorithmRunResult>> mainList = new();
+            List<List<TimeAlgorithmRunResult>> mainList = new();
             vectorLen = int.Parse(vectorLength);
             int runCount = int.Parse(count);
             stepType = Enum.Parse<StepType>(inpStepType);

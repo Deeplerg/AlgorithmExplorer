@@ -2,6 +2,7 @@
 using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Algorithms.Multiplication;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 using AlgorithmExplorer.Core.DataGenerators.Multiplication;
 
@@ -10,7 +11,7 @@ namespace AlgorithmExplorer.Application.ExecutionCoordinators.Multiplication;
 public class MultiplicationCoordinator(
     IDataGenerator<MultiplicationDataGeneratorOptions, MultiplicationOptions> generator,
     ICancellableAlgorithm<MultiplicationOptions, MultiplicationResult> algorithm,
-    ICancellableAlgorithmRunner runner)
+    ITimeAlgorithmRunner runner)
     : SequenceCoordinatorBase<
         MultiplicationCoordinatorOptions, MultiplicationOptions, MultiplicationResult, MultiplicationDataGeneratorOptions>(generator, algorithm, runner)
 {

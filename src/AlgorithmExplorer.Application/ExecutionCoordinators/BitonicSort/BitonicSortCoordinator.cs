@@ -2,6 +2,7 @@
 using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Algorithms.BitonicSort;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 using AlgorithmExplorer.Core.DataGenerators.BitonicSort;
 
@@ -10,7 +11,7 @@ namespace AlgorithmExplorer.Application.ExecutionCoordinators.BitonicSort;
 public class BitonicSortCoordinator(
     IDataGenerator<BitonicSortDataGeneratorOptions, BitonicSortOptions> generator,
     ICancellableAlgorithm<BitonicSortOptions, BitonicSortResult> algorithm,
-    ICancellableAlgorithmRunner runner)
+    ITimeAlgorithmRunner runner)
     : CoordinatorBase<
         BitonicSortCoordinatorOptions, BitonicSortOptions, BitonicSortResult, BitonicSortDataGeneratorOptions>(generator, algorithm, runner)
 {

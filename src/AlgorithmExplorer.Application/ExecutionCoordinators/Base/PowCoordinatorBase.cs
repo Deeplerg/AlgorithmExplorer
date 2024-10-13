@@ -1,5 +1,6 @@
 ﻿using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 using AlgorithmExplorer.Core.DataGenerators.Base;
 
@@ -18,7 +19,7 @@ public abstract class PowCoordinatorBase<
     protected PowCoordinatorBase(
         IDataGenerator<TDataGeneratorOptions, TRunOptions> generator,
         ICancellableAlgorithm<TRunOptions, TResult> algorithm,
-        ICancellableAlgorithmRunner runner)
+        ITimeAlgorithmRunner runner)
         : base(generator, algorithm, runner)
     {
     }

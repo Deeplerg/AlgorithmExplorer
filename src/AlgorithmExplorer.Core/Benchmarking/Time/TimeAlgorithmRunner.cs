@@ -1,25 +1,24 @@
 ﻿using System.Diagnostics;
 using AlgorithmExplorer.Core.Algorithms;
 
-namespace AlgorithmExplorer.Core.Benchmarking;
+namespace AlgorithmExplorer.Core.Benchmarking.Time;
 
-public class CancellableAlgorithmRunner : ICancellableAlgorithmRunner
+public class TimeAlgorithmRunner : ITimeAlgorithmRunner
 {
-    public async Task<BenchmarkResult> RunAsync<TAlgorithm, TRunOptions, TResult>(
-        TAlgorithm algorithm, 
-        IEnumerable<NumberedRunOptions<TRunOptions>> options,
-        CancellationToken cancellationToken, 
+    public async Task<TimeBenchmarkResult> RunAsync<TAlgorithm, TRunOptions, TResult>(
+        TimeRunnerOptions<TAlgorithm, TRunOptions, TResult> options, 
+        CancellationToken cancellationToken,
         IProgress<BenchmarkProgressReport>? progress = null) 
         where TAlgorithm : ICancellableAlgorithm<TRunOptions, TResult> 
         where TRunOptions : class
     {
-        var runResults = new List<AlgorithmRunResult>();
+        var runResults = new List<TimeAlgorithmRunResult>();
         TimeSpan totalTimeElapsed = TimeSpan.Zero;
         bool isCancelled = false;
         
         var stopwatch = new Stopwatch();
         
-        var enumeratedOptions = options.ToList(); 
+        var enumeratedOptions = options.RunOptions.ToList(); 
         
         for (int i = 0; i < enumeratedOptions.Count; i++)
         {
@@ -30,6 +29,7 @@ public class CancellableAlgorithmRunner : ICancellableAlgorithmRunner
             }
             
             var currentOptions = enumeratedOptions[i];
+            var algorithm = options.Algorithm;
             
             stopwatch.Restart();
             
@@ -38,13 +38,13 @@ public class CancellableAlgorithmRunner : ICancellableAlgorithmRunner
             stopwatch.Stop();
             totalTimeElapsed += stopwatch.Elapsed;
             
-            var runResult = new AlgorithmRunResult(
+            var runResult = new TimeAlgorithmRunResult(
                 stopwatch.Elapsed, algorithmResult.IsCancelled, currentOptions.DataLength);
             runResults.Add(runResult);
             
             progress?.Report(new BenchmarkProgressReport(i + 1));
         }
 
-        return new BenchmarkResult(runResults, isCancelled, totalTimeElapsed);
+        return new TimeBenchmarkResult(runResults, isCancelled, totalTimeElapsed);
     }
 }

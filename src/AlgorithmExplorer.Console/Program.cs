@@ -5,6 +5,7 @@ using AlgorithmExplorer.Application.InputExecutors;
 using AlgorithmExplorer.Application.Models.Input;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Infrastructure.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,7 @@ var services = new ServiceCollection();
 
 services.AddAlgorithms();
 
-services.AddTransient<ICancellableAlgorithmRunner, CancellableAlgorithmRunner>();
+services.AddTransient<ITimeAlgorithmRunner, TimeAlgorithmRunner>();
 
 services.AddSingleton<IInputExecutorTypeCollection, InputExecutorTypeCollection>(_ =>
 {

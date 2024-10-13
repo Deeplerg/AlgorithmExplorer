@@ -1,5 +1,6 @@
 ﻿using AlgorithmExplorer.Application.Models.Input;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using FluentValidation.Results;
 
 namespace AlgorithmExplorer.Application.InputExecutors;
@@ -12,9 +13,9 @@ public interface IInputExecutor
     
     Task<bool> PrepareDataAsync(CancellationToken cancellationToken);
     
-    Task<BenchmarkResult> RunAsync(
+    Task<TimeBenchmarkResult> RunAsync(
         CancellationToken cancellationToken,
         IProgress<BenchmarkProgressReport>? progress = null);
     
-    BenchmarkResult? BenchmarkResult { get; }
+    TimeBenchmarkResult? BenchmarkResult { get; }
 }

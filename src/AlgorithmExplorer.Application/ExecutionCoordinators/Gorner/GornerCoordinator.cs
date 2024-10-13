@@ -2,6 +2,7 @@
 using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Algorithms.Gorner;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 using AlgorithmExplorer.Core.DataGenerators.Gorner;
 
@@ -10,7 +11,7 @@ namespace AlgorithmExplorer.Application.ExecutionCoordinators.Gorner;
 public class GornerCoordinator(
     IDataGenerator<GornerDataGeneratorOptions, GornerOptions> generator,
     ICancellableAlgorithm<GornerOptions, GornerResult> algorithm,
-    ICancellableAlgorithmRunner runner)
+    ITimeAlgorithmRunner runner)
     : SequenceCoordinatorBase<
         GornerCoordinatorOptions, GornerOptions, GornerResult, GornerDataGeneratorOptions>(generator, algorithm, runner)
 {

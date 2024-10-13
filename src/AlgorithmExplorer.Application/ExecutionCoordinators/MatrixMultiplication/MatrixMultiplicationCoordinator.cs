@@ -2,6 +2,7 @@
 using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Algorithms.MatrixMultiplication;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 using AlgorithmExplorer.Core.DataGenerators.MatrixMultiplication;
 
@@ -10,7 +11,7 @@ namespace AlgorithmExplorer.Application.ExecutionCoordinators.MatrixMultiplicati
 public class MatrixMultiplicationCoordinator(
     IDataGenerator<MatrixMultiplicationDataGeneratorOptions, MatrixMultiplicationOptions> generator,
     ICancellableAlgorithm<MatrixMultiplicationOptions, MatrixMultiplicationResult> algorithm,
-    ICancellableAlgorithmRunner runner)
+    ITimeAlgorithmRunner runner)
     : CoordinatorBase<
         MatrixMultiplicationCoordinatorOptions, MatrixMultiplicationOptions, MatrixMultiplicationResult, MatrixMultiplicationDataGeneratorOptions>(generator, algorithm, runner)
 {
