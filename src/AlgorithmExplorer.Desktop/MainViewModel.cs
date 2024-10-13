@@ -19,19 +19,19 @@ namespace AlgorithmExplorer.Desktop
     public class MainViewModel
     {
         public PlotModel MyModel { get; private set; }
-        public IList<double> Points { get; private set; }
+        public IList<double> PointsY { get; private set; }
         public StringBuilder aprPolin { get; private set; }
         public double deviation { get; private set; }
-        private List<double> deviationApr = new List<double>(1);
-        private StepType stepType;
+        private List<double> deviationApr = new List<double>();
         private int vectorLen;
+        private double[] arrX;
 
         public MainViewModel()
         {
             MyModel = new PlotModel { Title = "График производительности алгоритма" };
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "Размер вектора" });
             MyModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Время (мс)" });
-            Points = new List<double>();
+            PointsY = new List<double>();
             deviationApr.Add(0);
         }
 
@@ -40,7 +40,6 @@ namespace AlgorithmExplorer.Desktop
             List<List<TimeAlgorithmRunResult>> mainList = new();
             vectorLen = int.Parse(vectorLength);
             int runCount = int.Parse(count);
-            stepType = Enum.Parse<StepType>(inpStepType);
             for (int k = 0; k < runCount; k++)
             {
                 var executor = inputData.GetByAlgorithm(alg)!;
@@ -76,85 +75,60 @@ namespace AlgorithmExplorer.Desktop
                 mainList.Add(benchmarkResult.AlgorithmResults.ToList());
             }
 
-            double[] list = new double[vectorLen];
+            double[] list = new double[mainList[0].Count];
+            arrX = new double[mainList[0].Count];
 
-
-            for (int step = 0; step < vectorLen; step++)
+            for (int j = 0; j < mainList[0].Count; j++)
             {
-                list[step] = 0;
+                list[j] = 0;
                 for (int i = 0; i < runCount; i++)
                 {
-                    if (i < mainList.Count && step < mainList[i].Count)
+                    if (i < mainList.Count && j < mainList[i].Count)
                     {
-                        list[step] += mainList[i][step].TimeElapsed.TotalMilliseconds; // Суммируем время
+                        list[j] += mainList[i][j].TimeElapsed.TotalMilliseconds; // Суммируем время
+                        arrX[j] = mainList[i][j].DataLength;
                     }
                 }
-                list[step] /= runCount; // Усредняем
+                list[j] /= runCount; // Усредняем
             }
             list[list.Length - 1] = mainList[0].Last().TimeElapsed.TotalMilliseconds;//[mainList[0].Count() - 1].TimeElapsed.TotalMilliseconds;
-            Points = list.ToList();
-            UpdatePlot(int.Parse(inpStartStep));
+            PointsY = list.ToList();
+            UpdatePlot();
         }
 
-        private int GetStep(int startStep, int iterationNumber)
-        {
-            if (stepType is StepType.Additive)
-            {
-                startStep += 0;
-            }
-            else if (stepType is StepType.Cumulative)
-            {
-                startStep *= 2;
-            }
-            else
-            {
-                startStep *= (int)Math.Pow(3, iterationNumber);
-            }
-            return startStep;
-        }
-
-        private void UpdatePlot(int startStep)
+        private void UpdatePlot()
         {
             MyModel.Series.Clear();
             LineSeries lineSeries = new LineSeries();
-            Points[0] = Points[startStep];
-            int iterationNumber = 0;
-            int step = startStep;
-            for (int i = 0; i < vectorLen; i += step)
+            PointsY[0] = 0;
+            for (int i = 0; i < arrX.Length; i++)
             {
-                step = GetStep(step, iterationNumber);
-                lineSeries.Points.Add(new DataPoint(i, Points[iterationNumber]));
-                iterationNumber++;
+                lineSeries.Points.Add(new DataPoint(arrX[i], PointsY[i]));
             }
 
             MyModel.Series.Add(lineSeries);
-            AddPolynomialTrendLine(lineSeries, 2, startStep); // 2 - это степень полинома
+            AddPolynomialTrendLine(lineSeries, 2); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
             for (int i = 0; i < deviationApr.Count - 1; i++)
             {
-                deviation += (Points[i] + deviationApr[i]) / 2;
+                deviation += (PointsY[i] + deviationApr[i]) / 2;
             }
-            deviation /= Points.Count;
+            deviation /= PointsY.Count;
         }
 
 
-        private void AddPolynomialTrendLine(LineSeries originalSeries, int degree, int startStep)
+        private void AddPolynomialTrendLine(LineSeries originalSeries, int degree)
         {
             var trendSeries = new LineSeries { Title = "Линия тренда", StrokeThickness = 2, Color = OxyColors.Red };
 
             // Используем динамический шаг
-            List<double> xValuesList = new List<double>();
             List<double> yValuesList = new List<double>();
-            int step = startStep;
-            int iterationNumber = 0;
-            for (int i = 0; i < Points.Count; i += step)
+
+            for (int i = 0; i < PointsY.Count; i++)
             {
-                step = GetStep(step, iterationNumber); 
-                xValuesList.Add(i);
-                yValuesList.Add(Points[iterationNumber]);
-                iterationNumber++;
+                yValuesList.Add(PointsY[i]);
             }
-            double[] xValues = xValuesList.ToArray();
+            double[] xValues = arrX;
             double[] yValues = yValuesList.ToArray();
 
             // Рассчитываем коэффициенты для полинома
@@ -186,9 +160,9 @@ namespace AlgorithmExplorer.Desktop
                 trendSeries.Points.Add(new DataPoint(xValues[i], trendY));
 
                 // Сохраняем отклонения
-                if (i < Points.Count)
+                if (i < PointsY.Count)
                 {
-                    deviationApr.Add(Points[(int)xValues[i]] - trendY);
+                    deviationApr.Add(PointsY[i] - trendY);
                 }
             }
 
