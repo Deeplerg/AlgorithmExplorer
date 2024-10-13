@@ -9,25 +9,23 @@ public abstract class CoordinatorBase<
     TCoordinatorOptions,
     TRunOptions,
     TResult,
-    TDataGeneratorOptions> 
-    : ICancellableCoordinator<TCoordinatorOptions>
+    TDataGeneratorOptions,
+    TCoordinatorResult> 
+    : ICancellableCoordinator<TCoordinatorOptions, TCoordinatorResult>
     where TRunOptions : class
     where TCoordinatorOptions : CoordinatorOptionsBase
 {
     protected readonly IDataGenerator<TDataGeneratorOptions, TRunOptions> _generator;
     protected readonly ICancellableAlgorithm<TRunOptions, TResult> _algorithm;
-    protected readonly ITimeAlgorithmRunner _runner;
 
     protected readonly List<NumberedRunOptions<TRunOptions>> _data = new();
     
     protected CoordinatorBase(
         IDataGenerator<TDataGeneratorOptions, TRunOptions> generator,
-        ICancellableAlgorithm<TRunOptions, TResult> algorithm,
-        ITimeAlgorithmRunner runner)
+        ICancellableAlgorithm<TRunOptions, TResult> algorithm)
     {
         _generator = generator;
         _algorithm = algorithm;
-        _runner = runner;
     }
     
     public virtual async Task<bool> PrepareDataAsync(TCoordinatorOptions options, CancellationToken token)
@@ -81,20 +79,8 @@ public abstract class CoordinatorBase<
         return true;
     }
 
-    public virtual async Task<TimeBenchmarkResult> RunAsync(
-        CancellationToken token,
-        IProgress<BenchmarkProgressReport>? progress = null)
-    {
-        if (!_data.Any()) throw new InvalidOperationException("Data has not been generated yet.");
-
-        var runnerOptions = new TimeRunnerOptions<ICancellableAlgorithm<TRunOptions, TResult>, TRunOptions, TResult>(
-            _algorithm, _data);
-        
-        var runResult = await _runner.RunAsync(
-            runnerOptions, token, progress);
-
-        return runResult;
-    }
+    public abstract Task<TCoordinatorResult> RunAsync(
+        CancellationToken token, IProgress<BenchmarkProgressReport>? progress = null);
 
     protected abstract TDataGeneratorOptions ConstructGeneratorOptions(TCoordinatorOptions options,
         int currentIteration);
@@ -102,6 +88,11 @@ public abstract class CoordinatorBase<
     protected virtual async Task<TRunOptions> GenerateAsync(TDataGeneratorOptions options)
     {
         return await Task.Run(() => _generator.Generate(options));
+    }
+
+    protected void GuardAgainstNoData()
+    {
+        if (!_data.Any()) throw new InvalidOperationException("Data has not been generated yet.");
     }
     
     private async Task<NumberedRunOptions<TRunOptions>> GenerateRunOptionsAsync(TCoordinatorOptions options, int iteration)

@@ -12,8 +12,12 @@ public class BitonicSortCoordinator(
     IDataGenerator<BitonicSortDataGeneratorOptions, BitonicSortOptions> generator,
     ICancellableAlgorithm<BitonicSortOptions, BitonicSortResult> algorithm,
     ITimeAlgorithmRunner runner)
-    : CoordinatorBase<
-        BitonicSortCoordinatorOptions, BitonicSortOptions, BitonicSortResult, BitonicSortDataGeneratorOptions>(generator, algorithm, runner)
+    : TimeCoordinatorBase<
+        BitonicSortCoordinatorOptions, 
+        BitonicSortOptions, 
+        BitonicSortResult, 
+        BitonicSortDataGeneratorOptions>(
+        generator, algorithm, runner)
 {
     protected override BitonicSortDataGeneratorOptions ConstructGeneratorOptions(
         BitonicSortCoordinatorOptions options,

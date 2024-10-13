@@ -37,12 +37,18 @@ namespace AlgorithmExplorer.Desktop
 
         public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType)
         {
+            bool isPowAlgorithm =
+                alg is AlgorithmType.DefaultPow
+                    or AlgorithmType.QuickPow
+                    or AlgorithmType.RecursivePow
+                    or AlgorithmType.SimplePow;
+            
             List<List<TimeAlgorithmRunResult>> mainList = new();
             vectorLen = int.Parse(vectorLength);
             int runCount = int.Parse(count);
             for (int k = 0; k < runCount; k++)
             {
-                var executor = inputData.GetByAlgorithm(alg)!;
+                var executor = inputData.GetByAlgorithm<TimeBenchmarkResult>(alg)!;
                 var powOptionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "number" }, inpForPow);
                 var optionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "iterations" }, vectorLength);
                 var stepOption = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "Step" }, inpStartStep);
@@ -51,7 +57,7 @@ namespace AlgorithmExplorer.Desktop
                 inputs.Inputs.Add(stepOption);
                 inputs.Inputs.Add(stepType);
 
-                if (alg is AlgorithmType.DefaultPow or AlgorithmType.QuickPow or AlgorithmType.RecursivePow or AlgorithmType.SimplePow)
+                if (isPowAlgorithm)
                 {
                     inputs.Inputs.Add(powOptionInput);
                 }

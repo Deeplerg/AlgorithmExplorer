@@ -8,37 +8,44 @@ public class RecursivePowAlgorithm : ICancellableAlgorithm<RecursivePowOptions, 
         var number = options.Number;
 
         long result = 0;
+        int totalOperations = 0;
+
         for (int i = 0; i < array.Length; i++)
         {
-            result = AuxiliaryFunction(number, array[i]);
+            var (res, operations) = AuxiliaryFunction(number, array[i]);
+            result = res;
+            totalOperations += operations;
         }
-
+        
         return new CancellableResult<RecursivePowResult>
         {
-            Result = new RecursivePowResult(result)
+            Result = new RecursivePowResult(result, totalOperations)
         };
     }
     
-    private static long AuxiliaryFunction(int number, int degree)
+    private static (long, int) AuxiliaryFunction(int number, int degree)
     {
-        long result;
-        if(degree == 0)
+        if (degree == 0)
         {
-            return 1;
+            return (1, 1);
+        }
+
+        int operationCount = 1; // Counting the call itself
+
+        var (result, recursiveOps) = AuxiliaryFunction(number, degree / 2);
+        operationCount += recursiveOps; // Add recursive operation count
+
+        if (degree % 2 == 1)
+        {
+            result = result * result * number;
+            operationCount += 2;  // 2 multiplications
         }
         else
         {
-            result = AuxiliaryFunction(number, degree / 2);
-            if(degree % 2 == 1)
-            {
-                result = result * result * number;
-            }
-            else
-            {
-                result = result * result;
-            }
+            result = result * result;
+            operationCount += 1; // 1 multiplication
         }
-        return result;
-    }
 
+        return (result, operationCount);
+    }
 }

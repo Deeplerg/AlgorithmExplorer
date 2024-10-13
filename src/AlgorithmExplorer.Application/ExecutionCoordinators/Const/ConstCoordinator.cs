@@ -12,8 +12,12 @@ public class ConstCoordinator(
     IDataGenerator<ConstDataGeneratorOptions, ConstOptions> generator,
     ICancellableAlgorithm<ConstOptions, ConstResult> algorithm,
     ITimeAlgorithmRunner runner)
-    : CoordinatorBase<
-        ConstCoordinatorOptions, ConstOptions, ConstResult, ConstDataGeneratorOptions>(generator, algorithm, runner)
+    : TimeCoordinatorBase<
+        ConstCoordinatorOptions, 
+        ConstOptions, 
+        ConstResult, 
+        ConstDataGeneratorOptions>(
+        generator, algorithm, runner)
 {
     protected override ConstDataGeneratorOptions ConstructGeneratorOptions(
         ConstCoordinatorOptions options,

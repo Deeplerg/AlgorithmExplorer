@@ -8,26 +8,24 @@ using FluentValidation.Results;
 
 namespace AlgorithmExplorer.Application.InputExecutors;
 
-public class InputExecutorBase<TCoordinatorOptions> : IInputExecutor
+public class InputExecutorBase<TCoordinatorOptions, TResult> : IInputExecutor<TResult>
     where TCoordinatorOptions : class
 {
     protected readonly IMapper<DisplayableOptionInputs, TCoordinatorOptions> _inputMapper;
     protected readonly IValidator<TCoordinatorOptions> _validator;
-    protected readonly ICancellableCoordinator<TCoordinatorOptions> _coordinator;
+    protected readonly ICancellableCoordinator<TCoordinatorOptions, TResult> _coordinator;
 
     protected TCoordinatorOptions? _input = null;
 
     public InputExecutorBase(
         IMapper<DisplayableOptionInputs, TCoordinatorOptions> inputMapper,
         IValidator<TCoordinatorOptions> validator,
-        ICancellableCoordinator<TCoordinatorOptions> coordinator)
+        ICancellableCoordinator<TCoordinatorOptions, TResult> coordinator)
     {
         _inputMapper = inputMapper;
         _validator = validator;
         _coordinator = coordinator;
     }
-    
-    public TimeBenchmarkResult? BenchmarkResult { get; protected set; } = null;
     
     public virtual void SetInput(DisplayableOptionInputs inputs)
     {
@@ -48,12 +46,11 @@ public class InputExecutorBase<TCoordinatorOptions> : IInputExecutor
         return await _coordinator.PrepareDataAsync(_input!, cancellationToken);
     }
 
-    public virtual async Task<TimeBenchmarkResult> RunAsync(CancellationToken cancellationToken, IProgress<BenchmarkProgressReport>? progress = null)
+    public virtual async Task<TResult> RunAsync(CancellationToken cancellationToken, IProgress<BenchmarkProgressReport>? progress = null)
     {
         GuardAgainstInputNull();
 
         var benchmarkResult = await _coordinator.RunAsync(cancellationToken, progress);
-        BenchmarkResult = benchmarkResult;
         
         return benchmarkResult;
     }

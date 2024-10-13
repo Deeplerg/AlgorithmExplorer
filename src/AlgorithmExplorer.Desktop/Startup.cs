@@ -2,6 +2,7 @@
 using AlgorithmExplorer.Application.InputExecutors;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Operations;
 using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Infrastructure.Configuration;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ public class Startup
         services.AddAlgorithms();
         
         services.AddTransient<ITimeAlgorithmRunner, TimeAlgorithmRunner>();
+        services.AddTransient<IOperationsAlgorithmRunner, OperationsAlgorithmRunner>();
 
         services.AddInputExecutorProviderServices();
 

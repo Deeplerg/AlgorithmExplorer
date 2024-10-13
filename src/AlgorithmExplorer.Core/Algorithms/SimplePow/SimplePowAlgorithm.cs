@@ -10,27 +10,35 @@ public class SimplePowAlgorithm : ICancellableAlgorithm<SimplePowOptions, Simple
         var number = options.Number;
 
         long result = 0;
+        int totalOperations = 0;
+
         for (int i = 0; i < array.Length; i++)
         {
-            result = AuxiliaryFunction(number, array[i]);
+            var (res, operations) = AuxiliaryFunction(number, array[i]);
+            result = res;
+            totalOperations += operations;
         }
 
         return new CancellableResult<SimplePowResult>
         {
-            Result = new SimplePowResult(result)
+            Result = new SimplePowResult(result, totalOperations)
         };
     }
-    private static long AuxiliaryFunction(int degree, int number)
+
+    private static (long, int) AuxiliaryFunction(int degree, int number)
     {
         var count = 0;
         var result = 1;
+        var operations = 0;
+
         while (count < degree)
         {
             result *= number;
+            operations++;
             count++;
         }
 
-        return result;
+        return (result, operations);
     }
 
 }

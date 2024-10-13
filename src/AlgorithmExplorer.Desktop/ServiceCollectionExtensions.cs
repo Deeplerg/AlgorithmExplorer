@@ -39,6 +39,8 @@ using AlgorithmExplorer.Core.Algorithms.RecursivePow;
 using AlgorithmExplorer.Core.Algorithms.SimplePow;
 using AlgorithmExplorer.Core.Algorithms.Sum;
 using AlgorithmExplorer.Core.Algorithms.TimSort;
+using AlgorithmExplorer.Core.Benchmarking.Operations;
+using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 using AlgorithmExplorer.Core.DataGenerators.BitonicSort;
 using AlgorithmExplorer.Core.DataGenerators.BubbleSort;
@@ -95,7 +97,7 @@ public static class ServiceCollectionExtensions
             SumDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<SumCoordinatorOptions>,
+            ICancellableCoordinator<SumCoordinatorOptions, TimeBenchmarkResult>,
             SumCoordinator>();
 
         services.AddTransient<
@@ -120,7 +122,7 @@ public static class ServiceCollectionExtensions
             MultiplicationDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<MultiplicationCoordinatorOptions>,
+            ICancellableCoordinator<MultiplicationCoordinatorOptions, TimeBenchmarkResult>,
             MultiplicationCoordinator>();
 
         services.AddTransient<
@@ -145,7 +147,7 @@ public static class ServiceCollectionExtensions
             PolynomDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<PolynomCoordinatorOptions>,
+            ICancellableCoordinator<PolynomCoordinatorOptions, TimeBenchmarkResult>,
             PolynomCoordinator>();
 
         services.AddTransient<
@@ -170,7 +172,7 @@ public static class ServiceCollectionExtensions
             GornerDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<GornerCoordinatorOptions>,
+            ICancellableCoordinator<GornerCoordinatorOptions, TimeBenchmarkResult>,
             GornerCoordinator>();
 
         services.AddTransient<
@@ -195,7 +197,7 @@ public static class ServiceCollectionExtensions
             BubbleSortDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<BubbleSortCoordinatorOptions>,
+            ICancellableCoordinator<BubbleSortCoordinatorOptions, TimeBenchmarkResult>,
             BubbleSortCoordinator>();
 
         services.AddTransient<
@@ -220,7 +222,7 @@ public static class ServiceCollectionExtensions
             BitonicSortDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<BitonicSortCoordinatorOptions>,
+            ICancellableCoordinator<BitonicSortCoordinatorOptions, TimeBenchmarkResult>,
             BitonicSortCoordinator>();
 
         services.AddTransient<
@@ -245,7 +247,7 @@ public static class ServiceCollectionExtensions
             TimSortDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<TimSortCoordinatorOptions>,
+            ICancellableCoordinator<TimSortCoordinatorOptions, TimeBenchmarkResult>,
             TimSortCoordinator>();
 
         services.AddTransient<
@@ -270,7 +272,7 @@ public static class ServiceCollectionExtensions
             QuickSortDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<QuickSortCoordinatorOptions>,
+            ICancellableCoordinator<QuickSortCoordinatorOptions, TimeBenchmarkResult>,
             QuickSortCoordinator>();
 
         services.AddTransient<
@@ -295,7 +297,7 @@ public static class ServiceCollectionExtensions
             DefaultPowDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<DefaultPowCoordinatorOptions>,
+            ICancellableCoordinator<DefaultPowCoordinatorOptions, OperationsBenchmarkResult>,
             DefaultPowCoordinator>();
 
         services.AddTransient<
@@ -322,7 +324,7 @@ public static class ServiceCollectionExtensions
             SimplePowDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<SimplePowCoordinatorOptions>,
+            ICancellableCoordinator<SimplePowCoordinatorOptions, OperationsBenchmarkResult>,
             SimplePowCoordinator>();
 
         services.AddTransient<
@@ -341,7 +343,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IInputExecutorTypeCollection, InputExecutorTypeCollection>(_ =>
         {
             var typeCollection = new InputExecutorTypeCollection();
-            typeCollection.AddAllFromAssembly(Assembly.GetAssembly(typeof(IInputExecutor))!);
+            typeCollection.AddAllFromAssembly(Assembly.GetAssembly(typeof(IInputExecutor<>))!);
 
             return typeCollection;
         });
@@ -361,7 +363,7 @@ public static class ServiceCollectionExtensions
             QuickPowDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<QuickPowCoordinatorOptions>,
+            ICancellableCoordinator<QuickPowCoordinatorOptions, OperationsBenchmarkResult>,
             QuickPowCoordinator>();
 
         services.AddTransient<
@@ -386,7 +388,7 @@ public static class ServiceCollectionExtensions
             RecursivePowDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<RecursivePowCoordinatorOptions>,
+            ICancellableCoordinator<RecursivePowCoordinatorOptions, OperationsBenchmarkResult>,
             RecursivePowCoordinator>();
 
         services.AddTransient<
@@ -412,7 +414,7 @@ public static class ServiceCollectionExtensions
             MatrixMultiplicationDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<MatrixMultiplicationCoordinatorOptions>,
+            ICancellableCoordinator<MatrixMultiplicationCoordinatorOptions, TimeBenchmarkResult>,
             MatrixMultiplicationCoordinator>();
 
         services.AddTransient<
@@ -437,7 +439,7 @@ public static class ServiceCollectionExtensions
             KadaneDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<KadaneCoordinatorOptions>,
+            ICancellableCoordinator<KadaneCoordinatorOptions, TimeBenchmarkResult>,
             KadaneCoordinator>();
 
         services.AddTransient<
@@ -463,7 +465,7 @@ public static class ServiceCollectionExtensions
             ConstDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<ConstCoordinatorOptions>,
+            ICancellableCoordinator<ConstCoordinatorOptions, TimeBenchmarkResult>,
             ConstCoordinator>();
 
         services.AddTransient<
@@ -488,7 +490,7 @@ public static class ServiceCollectionExtensions
             LISDataGenerator>();
 
         services.AddTransient<
-            ICancellableCoordinator<LISCoordinatorOptions>,
+            ICancellableCoordinator<LISCoordinatorOptions, TimeBenchmarkResult>,
             LISCoordinator>();
 
         services.AddTransient<

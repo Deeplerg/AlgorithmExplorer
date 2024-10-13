@@ -5,6 +5,7 @@ using AlgorithmExplorer.Application.InputExecutors;
 using AlgorithmExplorer.Application.Models.Input;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Operations;
 using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Infrastructure.Configuration;
 using Microsoft.Extensions.Configuration;
@@ -25,11 +26,12 @@ var services = new ServiceCollection();
 services.AddAlgorithms();
 
 services.AddTransient<ITimeAlgorithmRunner, TimeAlgorithmRunner>();
+services.AddTransient<IOperationsAlgorithmRunner, OperationsAlgorithmRunner>();
 
 services.AddSingleton<IInputExecutorTypeCollection, InputExecutorTypeCollection>(_ =>
 {
     var typeCollection = new InputExecutorTypeCollection();
-    typeCollection.AddAllFromAssembly(Assembly.GetAssembly(typeof(IInputExecutor))!);
+    typeCollection.AddAllFromAssembly(Assembly.GetAssembly(typeof(IInputExecutor<>))!);
 
     return typeCollection;
 });
@@ -91,7 +93,7 @@ var inputs = new DisplayableOptionInputs(displayableAlgorithmOption.AlgorithmNam
 
 
 var executorProvider = provider.GetRequiredService<IInputExecutorProvider>();
-var executor = executorProvider.GetByAlgorithm(algorithm)!;
+var executor = executorProvider.GetByAlgorithm<TimeBenchmarkResult>(algorithm)!;
 
 executor.SetInput(inputs);
 var validationResult = executor.ValidateInput();

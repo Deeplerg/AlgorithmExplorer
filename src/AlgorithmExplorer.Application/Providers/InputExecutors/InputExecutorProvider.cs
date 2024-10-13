@@ -23,9 +23,9 @@ public class InputExecutorProvider : IInputExecutorProvider
         return _instances;
     }
 
-    public IInputExecutor? GetByAlgorithm(AlgorithmType algorithm)
+    public IInputExecutor<TResult>? GetByAlgorithm<TResult>(AlgorithmType algorithm)
     {
-        return (IInputExecutor?)_instances.FirstOrDefault(t => InputExecutorForAlgorithmFilter(t, algorithm));
+        return (IInputExecutor<TResult>?)_instances.FirstOrDefault(t => InputExecutorForAlgorithmFilter(t, algorithm));
     }
 
     public object GetByType(Type type)

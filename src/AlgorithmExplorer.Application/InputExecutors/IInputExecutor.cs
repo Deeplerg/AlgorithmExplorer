@@ -5,7 +5,7 @@ using FluentValidation.Results;
 
 namespace AlgorithmExplorer.Application.InputExecutors;
 
-public interface IInputExecutor
+public interface IInputExecutor<TResult>
 {
     void SetInput(DisplayableOptionInputs inputs);
     
@@ -13,9 +13,7 @@ public interface IInputExecutor
     
     Task<bool> PrepareDataAsync(CancellationToken cancellationToken);
     
-    Task<TimeBenchmarkResult> RunAsync(
+    Task<TResult> RunAsync(
         CancellationToken cancellationToken,
         IProgress<BenchmarkProgressReport>? progress = null);
-    
-    TimeBenchmarkResult? BenchmarkResult { get; }
 }

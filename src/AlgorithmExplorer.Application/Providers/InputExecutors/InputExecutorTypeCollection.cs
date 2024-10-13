@@ -10,8 +10,8 @@ public class InputExecutorTypeCollection : IInputExecutorTypeCollection
     
     public void Add(Type type)
     {
-        if (!ImplementsInterface(type, typeof(IInputExecutor)))
-            throw new ArgumentException($"{type} doesn't implement {nameof(IInputExecutor)}");
+        if (!ImplementsGenericInterface(type, typeof(IInputExecutor<>)))
+            throw new ArgumentException($"{type} doesn't implement {typeof(IInputExecutor<>)}");
         
         types.Add(type);
     }
@@ -20,7 +20,7 @@ public class InputExecutorTypeCollection : IInputExecutorTypeCollection
     {
         var fromAssembly = assembly
             .GetTypes()
-            .Where(t => ImplementsInterface(t, typeof(IInputExecutor)))
+            .Where(t => ImplementsGenericInterface(t, typeof(IInputExecutor<>)))
             .Where(t => t.GetCustomAttribute<ForAlgorithmAttribute>() is not null);
         
         types.AddRange(fromAssembly);
@@ -36,8 +36,9 @@ public class InputExecutorTypeCollection : IInputExecutorTypeCollection
         return types;
     }
 
-    private bool ImplementsInterface(Type type, Type interfaceType)
+    private bool ImplementsGenericInterface(Type type, Type interfaceType)
     {
-        return type.GetInterfaces().Any(t => t == interfaceType);
+        return type.GetInterfaces().Any(t 
+            => t.IsGenericType && t.GetGenericTypeDefinition() == interfaceType);
     }
 }

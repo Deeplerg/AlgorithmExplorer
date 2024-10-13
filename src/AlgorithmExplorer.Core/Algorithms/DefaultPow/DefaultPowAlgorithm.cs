@@ -8,26 +8,32 @@ public class DefaultPowAlgorithm : ICancellableAlgorithm<DefaultPowOptions, Defa
         var number = options.Number;
 
         long result = 0;
+        int totalOperations = 0;
+
         for (int i = 0; i < array.Length; i++)
         {
-            result = AuxiliaryFunction(number, array[i]);
+            var (res, operations) = AuxiliaryFunction(number, array[i]);
+            result = res;
+            totalOperations += operations;
         }
 
         return new CancellableResult<DefaultPowResult>
         {
-            Result = new DefaultPowResult(result)
+            Result = new DefaultPowResult(result, totalOperations)
         };
     }
-    private static long AuxiliaryFunction(int degree, int number)
+
+    private static (long, int) AuxiliaryFunction(int degree, int number)
     {
-        if(degree == 0)
+        if (degree == 0)
         {
-            return 1;
+            return (1, 0);
         }
         else
         {
-            return number * AuxiliaryFunction(number, degree - 1);
+            var (partialResult, partialOps) = AuxiliaryFunction(number, degree - 1);
+            // Each recursive call with multiplication counts as an operation
+            return (number * partialResult, partialOps + 1);
         }
     }
-
 }

@@ -2,6 +2,7 @@
 using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Algorithms.DefaultPow;
 using AlgorithmExplorer.Core.Benchmarking;
+using AlgorithmExplorer.Core.Benchmarking.Operations;
 using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
 using AlgorithmExplorer.Core.DataGenerators.DefaultPow;
@@ -11,9 +12,13 @@ namespace AlgorithmExplorer.Application.ExecutionCoordinators.DefaultPow;
 public class DefaultPowCoordinator(
     IDataGenerator<DefaultPowDataGeneratorOptions, DefaultPowOptions> generator,
     ICancellableAlgorithm<DefaultPowOptions, DefaultPowResult> algorithm,
-    ITimeAlgorithmRunner runner)
+    IOperationsAlgorithmRunner runner)
     : PowCoordinatorBase<
-        DefaultPowCoordinatorOptions, DefaultPowOptions, DefaultPowResult, DefaultPowDataGeneratorOptions>(generator, algorithm, runner)
+        DefaultPowCoordinatorOptions, 
+        DefaultPowOptions, 
+        DefaultPowResult, 
+        DefaultPowDataGeneratorOptions>(
+        generator, algorithm, runner)
 {
     protected override DefaultPowDataGeneratorOptions ConstructGeneratorOptions(
         DefaultPowCoordinatorOptions options,

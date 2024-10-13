@@ -11,7 +11,7 @@ public abstract class SequenceCoordinatorBase<
     TRunOptions,
     TResult,
     TDataGeneratorOptions>
-    : CoordinatorBase<TCoordinatorOptions, TRunOptions, TResult, TDataGeneratorOptions>
+    : TimeCoordinatorBase<TCoordinatorOptions, TRunOptions, TResult, TDataGeneratorOptions>
     where TRunOptions : class
     where TCoordinatorOptions : CoordinatorOptionsBase
     where TDataGeneratorOptions : SequenceDataGeneratorOptionsBase

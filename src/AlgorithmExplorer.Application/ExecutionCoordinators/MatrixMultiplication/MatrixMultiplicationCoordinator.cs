@@ -12,8 +12,12 @@ public class MatrixMultiplicationCoordinator(
     IDataGenerator<MatrixMultiplicationDataGeneratorOptions, MatrixMultiplicationOptions> generator,
     ICancellableAlgorithm<MatrixMultiplicationOptions, MatrixMultiplicationResult> algorithm,
     ITimeAlgorithmRunner runner)
-    : CoordinatorBase<
-        MatrixMultiplicationCoordinatorOptions, MatrixMultiplicationOptions, MatrixMultiplicationResult, MatrixMultiplicationDataGeneratorOptions>(generator, algorithm, runner)
+    : TimeCoordinatorBase<
+        MatrixMultiplicationCoordinatorOptions, 
+        MatrixMultiplicationOptions, 
+        MatrixMultiplicationResult, 
+        MatrixMultiplicationDataGeneratorOptions>(
+        generator, algorithm, runner)
 {
     protected override MatrixMultiplicationDataGeneratorOptions ConstructGeneratorOptions(
         MatrixMultiplicationCoordinatorOptions options,
