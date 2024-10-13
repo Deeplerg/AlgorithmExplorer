@@ -7,7 +7,7 @@ public class CancellableAlgorithmRunner : ICancellableAlgorithmRunner
 {
     public async Task<BenchmarkResult> RunAsync<TAlgorithm, TRunOptions, TResult>(
         TAlgorithm algorithm, 
-        IEnumerable<TRunOptions> options,
+        IEnumerable<NumberedRunOptions<TRunOptions>> options,
         CancellationToken cancellationToken, 
         IProgress<BenchmarkProgressReport>? progress = null) 
         where TAlgorithm : ICancellableAlgorithm<TRunOptions, TResult> 
@@ -29,17 +29,17 @@ public class CancellableAlgorithmRunner : ICancellableAlgorithmRunner
                 break;
             }
             
-            var runOptions = enumeratedOptions[i];
+            var currentOptions = enumeratedOptions[i];
             
             stopwatch.Restart();
             
-            var algorithmResult = await Task.Run(() => algorithm.Run(runOptions, cancellationToken));
+            var algorithmResult = await Task.Run(() => algorithm.Run(currentOptions.RunOptions, cancellationToken));
             
             stopwatch.Stop();
             totalTimeElapsed += stopwatch.Elapsed;
             
             var runResult = new AlgorithmRunResult(
-                stopwatch.Elapsed, algorithmResult.IsCancelled);
+                stopwatch.Elapsed, algorithmResult.IsCancelled, currentOptions.DataLength);
             runResults.Add(runResult);
             
             progress?.Report(new BenchmarkProgressReport(i + 1));

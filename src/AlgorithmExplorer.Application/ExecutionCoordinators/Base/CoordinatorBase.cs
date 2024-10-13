@@ -17,7 +17,7 @@ public abstract class CoordinatorBase<
     protected readonly ICancellableAlgorithm<TRunOptions, TResult> _algorithm;
     protected readonly ICancellableAlgorithmRunner _runner;
 
-    protected readonly List<TRunOptions> _data = new();
+    protected readonly List<NumberedRunOptions<TRunOptions>> _data = new();
     
     protected CoordinatorBase(
         IDataGenerator<TDataGeneratorOptions, TRunOptions> generator,
@@ -49,7 +49,8 @@ public abstract class CoordinatorBase<
 
             var generatorOptions = ConstructGeneratorOptions(options, i);
             var runOptions = await GenerateAsync(generatorOptions);
-            _data.Add(runOptions);
+            var numberedRunOptions = new NumberedRunOptions<TRunOptions>(runOptions, i);
+            _data.Add(numberedRunOptions);
 
             switch (options.StepType)
             {
@@ -75,7 +76,8 @@ public abstract class CoordinatorBase<
         {
             var generatorOptions = ConstructGeneratorOptions(options, iterations);
             var runOptions = await GenerateAsync(generatorOptions);
-            _data.Add(runOptions);
+            var numberedRunOptions = new NumberedRunOptions<TRunOptions>(runOptions, iterations);
+            _data.Add(numberedRunOptions);
         }
 
         return true;
