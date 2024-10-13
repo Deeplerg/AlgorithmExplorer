@@ -17,6 +17,7 @@ using Microsoft.VisualBasic;
 using AlgorithmExplorer.Infrastructure.Configuration;
 using System.Configuration;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
+using AlgorithmExplorer.Application.ExecutionCoordinators.Base;
 
 namespace AlgorithmExplorer.Desktop;
 
@@ -46,12 +47,28 @@ public partial class MainWindow : Window
             AlgListBox.Items.Add(alg);
         }
 
+        var stepTypes = Enum.GetNames<StepType>();
+
+        foreach(String stepType in stepTypes)
+        {
+            LtBxSteps.Items.Add(stepType);
+        }
+
     }
 
     private async void StartButton_Click(object sender, RoutedEventArgs e)
     {
         string alg = "";
+        string stepType = "";
         AlgorithmType algorithmType = new AlgorithmType();
+        if (LtBxSteps.SelectedItem != null)
+        {
+            stepType = LtBxSteps.SelectedItem.ToString();
+        }
+        else
+        {
+            MessageBox.Show("Выберите тип шага");
+        }
         if (!(AlgListBox.SelectedItem == null))
         {
             alg = AlgListBox.SelectedItem as string;
@@ -60,24 +77,32 @@ public partial class MainWindow : Window
         else
         {
             MessageBox.Show("Выберите алгоритм");
+            return;
         }
         MainViewModel model = new MainViewModel();
         if (int.TryParse(InputLength.Text, out int length) && int.TryParse(InputNOR.Text, out int nOR))
         {
             if (alg.Contains("Pow") && (int.TryParse(InputForPow.Text, out int dA)))
-            {
-
-
+            { 
                 cts = new();
-                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text);
+                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType);
                 MainPlot.Model = model.MyModel;
 
                 TxBlApr.Text = model.aprPolin.ToString();
                 TxBlDeviation.Text = model.deviation.ToString();
             }
-            else
+            else if(alg.Contains("Pow") && !(int.TryParse(InputForPow.Text, out int dA1)))
             {
                 MessageBox.Show("Некорректные входные данные");
+            }
+            else
+            {
+                cts = new();
+                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType);
+                MainPlot.Model = model.MyModel;
+
+                TxBlApr.Text = model.aprPolin.ToString();
+                TxBlDeviation.Text = model.deviation.ToString();
             }
         }
         else

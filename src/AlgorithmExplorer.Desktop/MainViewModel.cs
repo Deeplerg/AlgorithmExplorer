@@ -11,6 +11,7 @@ using AlgorithmExplorer.Infrastructure.Configuration;
 using AlgorithmExplorer.Application.Models.Input;
 using OxyPlot.Axes;
 using System.Text;
+using AlgorithmExplorer.Application.ExecutionCoordinators.Base;
 
 namespace AlgorithmExplorer.Desktop
 {
@@ -30,7 +31,7 @@ namespace AlgorithmExplorer.Desktop
             Points = new List<double>();
         }
 
-        public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow)
+        public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType)
         {
             List<List<Core.Benchmarking.AlgorithmRunResult>> mainList = new();
             int vectorLen = int.Parse(vectorLength);
@@ -41,7 +42,12 @@ namespace AlgorithmExplorer.Desktop
                 var executor = inputData.GetByAlgorithm(alg)!;
                 var powOptionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "number" }, inpForPow);
                 var optionInput = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "iterations" }, vectorLength);
+                var stepOption = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "Step" }, inpStartStep);
+                var stepType = new DisplayableOptionInput(new DisplayableCoordinatorOption { DisplayName = "StepType"}, inpStepType);
                 var inputs = new DisplayableOptionInputs(alg, new List<DisplayableOptionInput> { optionInput });
+                inputs.Inputs.Add(stepOption);
+                inputs.Inputs.Add(stepType);
+                
                 if(alg is AlgorithmType.DefaultPow or AlgorithmType.QuickPow or AlgorithmType.RecursivePow or AlgorithmType.SimplePow)
                 {
                     inputs.Inputs.Add(powOptionInput);
@@ -68,39 +74,60 @@ namespace AlgorithmExplorer.Desktop
 
             double[] list = new double[vectorLen];
 
-            for (int k = 0; k < vectorLen; k++)
+            int step = int.Parse(inpStartStep);
+            int iterationNumber = 0;
+
+            for (int k = 0; k < vectorLen; k += step)
             {
-                list[k] = 0;
+                list[iterationNumber] = 0;
                 for (int i = 0; i < runCount; i++)
                 {
                     if (i < mainList.Count && k < mainList[i].Count)
                     {
-                        list[k] += mainList[i][k].TimeElapsed.TotalMilliseconds; // Суммируем время
+                        list[iterationNumber] += mainList[i][k].TimeElapsed.TotalMilliseconds; // Суммируем время
                     }
                 }
               
-                list[k] /= runCount; // Усредняем
+                list[iterationNumber] /= runCount; // Усредняем
+
+                step = GetStep(step, inpStepType, iterationNumber);
+                iterationNumber++;
             }
 
             Points = list.ToList();
-            UpdatePlot();
+            UpdatePlot( int.Parse(inpStartStep), inpStepType);
         }
 
-        private void UpdatePlot()
+        private int GetStep(int startStep, string stepType, int iterationNumber)
+        {
+            if (stepType == "Additive")
+            {
+                startStep += 10 * (iterationNumber + 1);
+            }
+            else if (stepType == "Cumulative")
+            {
+
+            }
+            else
+            {
+                startStep *= (int)Math.Pow(10, iterationNumber);
+            }
+            return startStep;
+        }
+
+        private void UpdatePlot( int startStep, string stepType)
         {
             MyModel.Series.Clear();
             LineSeries lineSeries = new LineSeries();
             Points[0] = Points[1];
             for (int i = 0; i < Points.Count; i++)
             {
-                if(i != 0 && i != Points.Count - 1)
+                if (Points[i] == 0 && i != 0)
                 {
-                    if (Math.Abs(Points[i] - Points[i - 1]) > 50 || Math.Abs(Points[i] - Points[i + 1]) > 50)
-                    {
-                        Points[i] = (Points[i - 1] + Points[i + 1]) / 2;
-                    }
+                    break;
                 }
-                lineSeries.Points.Add(new DataPoint(i, Points[i]));
+                lineSeries.Points.Add(new DataPoint(GetStep(startStep, stepType, i), Points[i]));
+                startStep = GetStep(startStep, stepType, i);
             }
 
             MyModel.Series.Add(lineSeries);
