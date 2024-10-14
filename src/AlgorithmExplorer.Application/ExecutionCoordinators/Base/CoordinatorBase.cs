@@ -1,4 +1,5 @@
-﻿using AlgorithmExplorer.Core.Algorithms;
+﻿using System.Runtime.CompilerServices;
+using AlgorithmExplorer.Core.Algorithms;
 using AlgorithmExplorer.Core.Benchmarking;
 using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Core.DataGenerators;
@@ -18,7 +19,8 @@ public abstract class CoordinatorBase<
     protected readonly IDataGenerator<TDataGeneratorOptions, TRunOptions> _generator;
     protected readonly ICancellableAlgorithm<TRunOptions, TResult> _algorithm;
 
-    protected readonly List<NumberedRunOptions<TRunOptions>> _data = new();
+    protected IAsyncEnumerable<NumberedRunOptions<TRunOptions>>? _data = null;
+    protected int _totalDataCount = 0;
     
     protected CoordinatorBase(
         IDataGenerator<TDataGeneratorOptions, TRunOptions> generator,
@@ -30,7 +32,10 @@ public abstract class CoordinatorBase<
     
     public virtual async Task<bool> PrepareDataAsync(TCoordinatorOptions options, CancellationToken token)
     {
-        _data.Clear();
+        _data = null;
+        _totalDataCount = 0;
+        
+        var generationOptions = new List<(TCoordinatorOptions coordinatorOptions, int iteration)>();
 
         int totalIterations = options.IterationCount;
         int cumulativeStep = options.Step;
@@ -43,12 +48,11 @@ public abstract class CoordinatorBase<
             
             if (token.IsCancellationRequested)
             {
-                _data.Clear();
                 return false;
             }
 
-            var runOptions = await GenerateRunOptionsAsync(options, i);
-            _data.Add(runOptions);
+            generationOptions.Add((options, i));
+            _totalDataCount++;
 
             switch (options.StepType)
             {
@@ -72,9 +76,10 @@ public abstract class CoordinatorBase<
 
         if (!addedMaxIteration)
         {
-            var runOptions = await GenerateRunOptionsAsync(options, totalIterations);
-            _data.Add(runOptions);
+            generationOptions.Add((options, totalIterations));
         }
+
+        _data = PrepareEnumerableAsync(generationOptions, token);
 
         return true;
     }
@@ -92,7 +97,21 @@ public abstract class CoordinatorBase<
 
     protected void GuardAgainstNoData()
     {
-        if (!_data.Any()) throw new InvalidOperationException("Data has not been generated yet.");
+        if (_data is null || _totalDataCount == 0) 
+            throw new InvalidOperationException("Data has not been generated yet.");
+    }
+
+    protected virtual async IAsyncEnumerable<NumberedRunOptions<TRunOptions>> PrepareEnumerableAsync(
+        List<(TCoordinatorOptions coordinatorOptions, int iteration)> generationOptions, 
+        [EnumeratorCancellation] CancellationToken token)
+    {
+        foreach (var generationOption in generationOptions)
+        {
+            token.ThrowIfCancellationRequested();
+            
+            yield return await GenerateRunOptionsAsync(
+                generationOption.coordinatorOptions, generationOption.iteration);
+        }
     }
     
     private async Task<NumberedRunOptions<TRunOptions>> GenerateRunOptionsAsync(TCoordinatorOptions options, int iteration)

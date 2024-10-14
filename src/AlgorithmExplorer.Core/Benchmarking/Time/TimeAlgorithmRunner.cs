@@ -17,32 +17,39 @@ public class TimeAlgorithmRunner : ITimeAlgorithmRunner
         bool isCancelled = false;
         
         var stopwatch = new Stopwatch();
-        
-        var enumeratedOptions = options.RunOptions.ToList(); 
-        
-        for (int i = 0; i < enumeratedOptions.Count; i++)
+
+        try
         {
-            if (cancellationToken.IsCancellationRequested)
+            int i = 0;
+            await foreach (var currentOptions in options.RunOptions.WithCancellation(cancellationToken))
             {
-                isCancelled = true;
-                break;
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    isCancelled = true;
+                    break;
+                }
+
+                var algorithm = options.Algorithm;
+
+                stopwatch.Restart();
+
+                var algorithmResult = await Task.Run(() => algorithm.Run(currentOptions.RunOptions, cancellationToken));
+
+                stopwatch.Stop();
+                totalTimeElapsed += stopwatch.Elapsed;
+
+                var runResult = new TimeAlgorithmRunResult(
+                    stopwatch.Elapsed, algorithmResult.IsCancelled, currentOptions.DataLength);
+                runResults.Add(runResult);
+
+                progress?.Report(new BenchmarkProgressReport(i + 1));
+
+                i++;
             }
-            
-            var currentOptions = enumeratedOptions[i];
-            var algorithm = options.Algorithm;
-            
-            stopwatch.Restart();
-            
-            var algorithmResult = await Task.Run(() => algorithm.Run(currentOptions.RunOptions, cancellationToken));
-            
-            stopwatch.Stop();
-            totalTimeElapsed += stopwatch.Elapsed;
-            
-            var runResult = new TimeAlgorithmRunResult(
-                stopwatch.Elapsed, algorithmResult.IsCancelled, currentOptions.DataLength);
-            runResults.Add(runResult);
-            
-            progress?.Report(new BenchmarkProgressReport(i + 1));
+        }
+        catch (OperationCanceledException)
+        {
+            isCancelled = true;
         }
 
         return new TimeBenchmarkResult(runResults, isCancelled, totalTimeElapsed);

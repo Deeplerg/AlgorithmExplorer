@@ -4,7 +4,8 @@ namespace AlgorithmExplorer.Core.Benchmarking.Operations;
 
 public record class OperationsRunnerOptions<TAlgorithm, TRunOptions, TResult>(
     TAlgorithm Algorithm, 
-    IEnumerable<NumberedRunOptions<TRunOptions>> RunOptions)
+    IAsyncEnumerable<NumberedRunOptions<TRunOptions>> RunOptions,
+    int TotalOptionsCount)
     where TAlgorithm : ICancellableAlgorithm<TRunOptions, TResult>
     where TRunOptions : class
     where TResult : OperationsResultBase;

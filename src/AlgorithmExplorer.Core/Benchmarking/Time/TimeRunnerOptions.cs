@@ -4,6 +4,7 @@ namespace AlgorithmExplorer.Core.Benchmarking.Time;
 
 public record class TimeRunnerOptions<TAlgorithm, TRunOptions, TResult>(
     TAlgorithm Algorithm, 
-    IEnumerable<NumberedRunOptions<TRunOptions>> RunOptions)
+    IAsyncEnumerable<NumberedRunOptions<TRunOptions>> RunOptions,
+    int TotalOptionsCount)
     where TAlgorithm : ICancellableAlgorithm<TRunOptions, TResult>
     where TRunOptions : class;

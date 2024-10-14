@@ -33,7 +33,7 @@ public abstract class TimeCoordinatorBase<
 
         var runnerOptions = new TimeRunnerOptions<
             ICancellableAlgorithm<TRunOptions, TResult>, TRunOptions, TResult>(
-            _algorithm, _data);
+            _algorithm, _data!, _totalDataCount);
         
         var runResult = await _runner.RunAsync(
             runnerOptions, token, progress);

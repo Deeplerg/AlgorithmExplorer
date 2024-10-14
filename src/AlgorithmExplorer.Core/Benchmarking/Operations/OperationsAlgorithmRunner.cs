@@ -16,30 +16,37 @@ public class OperationsAlgorithmRunner : IOperationsAlgorithmRunner
         long totalOperations = 0;
         var runResults = new List<OperationsAlgorithmRunResult>();
         bool isCancelled = false;
-        
-        var enumeratedOptions = options.RunOptions.ToList(); 
-        
-        for (int i = 0; i < enumeratedOptions.Count; i++)
+
+        int i = 0;
+        try
         {
-            if (cancellationToken.IsCancellationRequested)
+            await foreach (var currentOptions in options.RunOptions.WithCancellation(cancellationToken))
             {
-                isCancelled = true;
-                break;
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    isCancelled = true;
+                    break;
+                }
+
+                var algorithm = options.Algorithm;
+
+                var algorithmResult = await Task.Run(() => algorithm.Run(currentOptions.RunOptions, cancellationToken));
+
+                long operations = algorithmResult.Result?.Operations ?? 0;
+                totalOperations += operations;
+
+                var runResult = new OperationsAlgorithmRunResult(
+                    operations, algorithmResult.IsCancelled, currentOptions.DataLength);
+                runResults.Add(runResult);
+
+                progress?.Report(new BenchmarkProgressReport(i + 1));
+
+                i++;
             }
-            
-            var currentOptions = enumeratedOptions[i];
-            var algorithm = options.Algorithm;
-            
-            var algorithmResult = await Task.Run(() => algorithm.Run(currentOptions.RunOptions, cancellationToken));
-            
-            long operations = algorithmResult.Result?.Operations ?? 0;
-            totalOperations += operations;
-            
-            var runResult = new OperationsAlgorithmRunResult(
-                operations, algorithmResult.IsCancelled, currentOptions.DataLength);
-            runResults.Add(runResult);
-            
-            progress?.Report(new BenchmarkProgressReport(i + 1));
+        }
+        catch (OperationCanceledException)
+        {
+            isCancelled = true;
         }
 
         return new OperationsBenchmarkResult(runResults, isCancelled, totalOperations);
