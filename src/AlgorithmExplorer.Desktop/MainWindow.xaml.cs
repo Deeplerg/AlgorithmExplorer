@@ -54,6 +54,7 @@ public partial class MainWindow : Window
             LtBxSteps.Items.Add(stepType);
         }
 
+        TxBlApr.Text = "3";
     }
 
     private async void StartButton_Click(object sender, RoutedEventArgs e)

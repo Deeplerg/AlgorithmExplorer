@@ -28,6 +28,7 @@ namespace AlgorithmExplorer.Desktop
         private List<double> deviationApr = new List<double>();
         private int vectorLen;
         private double[] arrX;
+        private int apprDergee;
 
         public MainViewModel()
         {
@@ -36,8 +37,13 @@ namespace AlgorithmExplorer.Desktop
             deviationApr.Add(0);
         }
 
-        public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType)
+        public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType, string aprDeg)
         {
+            bool check = int.TryParse(aprDeg, out apprDergee);
+            if(!check)
+            {
+                apprDergee = 3;
+            }
             bool isPowAlgorithm =
                 alg is AlgorithmType.DefaultPow
                     or AlgorithmType.QuickPow
@@ -160,7 +166,7 @@ namespace AlgorithmExplorer.Desktop
             }
 
             MyModel.Series.Add(lineSeries);
-            AddPolynomialTrendLine(lineSeries, 11); // 2 - это степень полинома
+            AddPolynomialTrendLine(lineSeries, apprDergee); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
             for (int i = 0; i < deviationApr.Count - 1; i++)
             {
