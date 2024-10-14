@@ -110,8 +110,8 @@ namespace AlgorithmExplorer.Desktop
             }
 
             double[] list = new double[mainList[0].Count];
-            arrX = new double[mainList[0].Count];
-
+            arrX = new double[mainList[0].Count + 1];
+            arrX[0] = 0;
             for (int j = 0; j < mainList[0].Count; j++)
             {
                 list[j] = 0;
@@ -120,7 +120,7 @@ namespace AlgorithmExplorer.Desktop
                     if (i < mainList.Count && j < mainList[i].Count)
                     {
                         list[j] += mainList[i][j].Number; // Суммируем время
-                        arrX[j] = mainList[i][j].DataLength;
+                        arrX[j + 1] = mainList[i][j].DataLength;
                     }
                 }
                 list[j] /= runCount; // Усредняем
@@ -154,13 +154,13 @@ namespace AlgorithmExplorer.Desktop
             MyModel.Series.Clear();
             LineSeries lineSeries = new LineSeries();
             PointsY[0] = 0;
-            for (int i = 0; i < arrX.Length; i++)
+            for (int i = 0; i < PointsY.Count; i++)
             {
-                lineSeries.Points.Add(new DataPoint(arrX[i], PointsY[i]));
+                lineSeries.Points.Add(new DataPoint(arrX[i + 1], PointsY[i]));
             }
 
             MyModel.Series.Add(lineSeries);
-            AddPolynomialTrendLine(lineSeries, 2); // 2 - это степень полинома
+            AddPolynomialTrendLine(lineSeries, 11); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
             for (int i = 0; i < deviationApr.Count - 1; i++)
             {
@@ -173,9 +173,11 @@ namespace AlgorithmExplorer.Desktop
         private void AddPolynomialTrendLine(LineSeries originalSeries, int degree)
         {
             var trendSeries = new LineSeries { Title = "Линия тренда", StrokeThickness = 2, Color = OxyColors.Red };
-
+            //trendSeries.Points.Add(new DataPoint(0, 0));
             // Используем динамический шаг
             List<double> yValuesList = new List<double>();
+            double zero = 0;
+            yValuesList.Add(zero);
 
             for (int i = 0; i < PointsY.Count; i++)
             {

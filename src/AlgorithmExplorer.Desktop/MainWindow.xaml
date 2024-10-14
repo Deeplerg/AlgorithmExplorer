@@ -21,7 +21,7 @@
                 </TransformGroup>
             </oxy:PlotView.RenderTransform>
         </oxy:PlotView>
-        <Button x:Name="StartButton" Content="Начать" Margin="0,748,257,0" Click="StartButton_Click" RenderTransformOrigin="1.189,0.348" Height="80" VerticalAlignment="Top" HorizontalAlignment="Right" Width="196"/>
+        <Button x:Name="StartButton" Content="Начать" Margin="0,786,259,0" Click="StartButton_Click" RenderTransformOrigin="1.189,0.348" Height="80" VerticalAlignment="Top" HorizontalAlignment="Right" Width="196"/>
         <ListBox x:Name="AlgListBox" HorizontalAlignment="Left" Height="203" Margin="31,41,0,0" VerticalAlignment="Top" Width="286" FontFamily="Verdana">
             <System:String>BubbleSort</System:String>
             <System:String>ConstFunc</System:String>
@@ -31,12 +31,12 @@
         <Label x:Name="LableInpNOR" Content="Введите кол-во повторений" Margin="426,68,0,0" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="272"/>
         <Label x:Name="LableAlg" Content="Выберите Алгоритм" HorizontalAlignment="Left" Margin="43,10,0,0" VerticalAlignment="Top" FontFamily="Verdana"/>
         <Label Content="Введите основание &#xD;&#xA;степени" Height="64" Margin="426,141,0,0" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="248"/>
-        <Button Content="Галя,ОТМЕНА" Margin="0,748,10,0" Click="Button_Click" Height="75" VerticalAlignment="Top" HorizontalAlignment="Right" Width="196" RenderTransformOrigin="0.305,-0.928"/>
+        <Button Content="Галя,ОТМЕНА" Margin="0,781,10,0" Click="Button_Click" Height="75" VerticalAlignment="Top" HorizontalAlignment="Right" Width="196" RenderTransformOrigin="0.305,-0.928"/>
         <TextBox x:Name="InputLength" Height="37" Margin="426,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="223"/>
         <TextBox x:Name="InputNOR" Height="36" Margin="426,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="223"/>
         <TextBox x:Name="InputForPow" Height="39" Margin="426,205,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="223"/>
         <Label x:Name="AprText" Height="42" Margin="0,423,331,0" VerticalAlignment="Top" Content="Функция" FontFamily="Verdana" RenderTransformOrigin="0.772,0.561" HorizontalAlignment="Right" Width="124"/>
-        <TextBlock x:Name="TxBlApr" Margin="0,470,10,0" TextWrapping="Wrap" FontFamily="Verdana" Background="White" UseLayoutRounding="True" Height="218" VerticalAlignment="Top" HorizontalAlignment="Right" Width="461" DataContext="{Binding aprPolin}" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2,0,0,0"/>
+        <TextBlock x:Name="TxBlApr" Margin="0,470,10,0" TextWrapping="Wrap" FontFamily="Verdana" Background="White" UseLayoutRounding="True" Height="273" VerticalAlignment="Top" HorizontalAlignment="Right" Width="461" DataContext="{Binding aprPolin}" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2,0,0,0"/>
         <TextBlock x:Name="TxBlDeviation" HorizontalAlignment="Right" Height="66" Margin="0,352,257,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="214" Background="White" FontFamily="Verdana"/>
         <Label Content="Отклонение" HorizontalAlignment="Right" Height="31" Margin="0,316,331,0" VerticalAlignment="Top" Width="140" FontFamily="Verdana"/>
         <ListBox x:Name="LtBxSteps" HorizontalAlignment="Left" Height="94" Margin="739,48,0,0" VerticalAlignment="Top" Width="240" d:ItemsSource="{d:SampleData ItemCount=5}"/>
