@@ -54,7 +54,7 @@ public partial class MainWindow : Window
             LtBxSteps.Items.Add(stepType);
         }
 
-        TxBlApr.Text = "3";
+        TxBxApr.Text = "3";
     }
 
     private async void StartButton_Click(object sender, RoutedEventArgs e)
@@ -99,7 +99,7 @@ public partial class MainWindow : Window
             else
             {
                 cts = new();
-                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType);
+                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType, TxBxApr.Text);
                 MainPlot.Model = model.MyModel;
 
                 TxBlApr.Text = model.aprPolin.ToString();
