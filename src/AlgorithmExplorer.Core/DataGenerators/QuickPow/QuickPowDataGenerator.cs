@@ -7,7 +7,6 @@ public class QuickPowDataGenerator : NumberSequenceGenerator<QuickPowDataGenerat
 {
     public override QuickPowOptions Generate(QuickPowDataGeneratorOptions options)
     {
-        var numbers = GenerateArray(options.Count);
-        return new QuickPowOptions(numbers, options.Number);
+        return new QuickPowOptions(options.Power, options.Base);
     }
 }

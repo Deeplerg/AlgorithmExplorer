@@ -4,30 +4,22 @@ public class QuickPowAlgorithm : ICancellableAlgorithm<QuickPowOptions, QuickPow
 {
     public CancellableResult<QuickPowResult> Run(QuickPowOptions options, CancellationToken token)
     {
-        var array = options.Elements;
-        var number = options.Number;
+        var power = options.Power;
+        var @base = options.Base;
 
-        long result = 0;
-        int totalOperations = 0;
-
-        for (int i = 0; i < array.Length; i++)
-        {
-            var (res, operations) = AuxiliaryFunction(number, array[i]);
-            result = res;
-            totalOperations += operations;
-        }
+        var (result, operations) = AuxiliaryFunction(@base, power);
 
         return new CancellableResult<QuickPowResult>
         {
-            Result = new QuickPowResult(result, totalOperations) 
+            Result = new QuickPowResult(result, operations)
         };
     }
     
-    private static (long, int) AuxiliaryFunction(int number, int degree)
+    private static (long, int) AuxiliaryFunction(int @base, int power)
     {
-        int temp = number;
+        int temp = @base;
         long result = 1;
-        int count = degree;
+        int count = power;
         int operationCount = 0;
 
         while (count != 0)

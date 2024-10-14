@@ -8,7 +8,7 @@ public class SimplePowDataGeneratorOptions : PowDataGeneratorOptionsBase
     {
     }
 
-    public SimplePowDataGeneratorOptions(int count, int number) : base(count, number)
+    public SimplePowDataGeneratorOptions(int power, int @base) : base(power, @base)
     {
     }
 }

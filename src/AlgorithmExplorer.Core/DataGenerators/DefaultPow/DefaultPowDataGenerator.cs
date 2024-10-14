@@ -7,7 +7,6 @@ public class DefaultPowDataGenerator : NumberSequenceGenerator<DefaultPowDataGen
 {
     public override DefaultPowOptions Generate(DefaultPowDataGeneratorOptions options)
     {
-        var numbers = GenerateArray(options.Count);
-        return new DefaultPowOptions(numbers, options.Number);
+        return new DefaultPowOptions(options.Power, options.Base);
     }
 }

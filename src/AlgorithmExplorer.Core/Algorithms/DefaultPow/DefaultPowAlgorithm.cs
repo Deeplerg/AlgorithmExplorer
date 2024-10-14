@@ -4,36 +4,28 @@ public class DefaultPowAlgorithm : ICancellableAlgorithm<DefaultPowOptions, Defa
 {
     public CancellableResult<DefaultPowResult> Run(DefaultPowOptions options, CancellationToken token)
     {
-        var array = options.Elements;
-        var number = options.Number;
+        var power = options.Power;
+        var @base = options.Base;
 
-        long result = 0;
-        int totalOperations = 0;
-
-        for (int i = 0; i < array.Length; i++)
-        {
-            var (res, operations) = AuxiliaryFunction(number, array[i]);
-            result = res;
-            totalOperations += operations;
-        }
+        var (result, operations) = AuxiliaryFunction(@base, power);
 
         return new CancellableResult<DefaultPowResult>
         {
-            Result = new DefaultPowResult(result, totalOperations)
+            Result = new DefaultPowResult(result, operations)
         };
     }
 
-    private static (long, int) AuxiliaryFunction(int degree, int number)
+    private static (long, long) AuxiliaryFunction(int @base, int power)
     {
-        if (degree == 0)
+        if (power == 0)
         {
             return (1, 0);
         }
         else
         {
-            var (partialResult, partialOps) = AuxiliaryFunction(number, degree - 1);
+            var (partialResult, operations) = AuxiliaryFunction(@base, power - 1);
             // Each recursive call with multiplication counts as an operation
-            return (number * partialResult, partialOps + 1);
+            return (@base * partialResult, operations + 1);
         }
     }
 }

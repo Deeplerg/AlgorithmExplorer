@@ -4,40 +4,32 @@ public class RecursivePowAlgorithm : ICancellableAlgorithm<RecursivePowOptions, 
 {
     public CancellableResult<RecursivePowResult> Run(RecursivePowOptions options, CancellationToken token)
     {
-        var array = options.Elements;
-        var number = options.Number;
+        var power = options.Power;
+        var @base = options.Base;
 
-        long result = 0;
-        int totalOperations = 0;
-
-        for (int i = 0; i < array.Length; i++)
-        {
-            var (res, operations) = AuxiliaryFunction(number, array[i]);
-            result = res;
-            totalOperations += operations;
-        }
+        var (result, operations) = AuxiliaryFunction(@base, power);
         
         return new CancellableResult<RecursivePowResult>
         {
-            Result = new RecursivePowResult(result, totalOperations)
+            Result = new RecursivePowResult(result, operations)
         };
     }
     
-    private static (long, int) AuxiliaryFunction(int number, int degree)
+    private static (long, int) AuxiliaryFunction(int @base, int power)
     {
-        if (degree == 0)
+        if (power == 0)
         {
             return (1, 1);
         }
 
         int operationCount = 1; // Counting the call itself
 
-        var (result, recursiveOps) = AuxiliaryFunction(number, degree / 2);
+        var (result, recursiveOps) = AuxiliaryFunction(@base, power / 2);
         operationCount += recursiveOps; // Add recursive operation count
 
-        if (degree % 2 == 1)
+        if (power % 2 == 1)
         {
-            result = result * result * number;
+            result = result * result * @base;
             operationCount += 2;  // 2 multiplications
         }
         else

@@ -7,7 +7,6 @@ public class RecursivePowDataGenerator : NumberSequenceGenerator<RecursivePowDat
 {
     public override RecursivePowOptions Generate(RecursivePowDataGeneratorOptions options)
     {
-        var numbers = GenerateArray(options.Count);
-        return new RecursivePowOptions(numbers, options.Number);
+        return new RecursivePowOptions(options.Power, options.Base);
     }
 }

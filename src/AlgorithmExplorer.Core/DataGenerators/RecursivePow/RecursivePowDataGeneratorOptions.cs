@@ -8,7 +8,7 @@ public class RecursivePowDataGeneratorOptions : PowDataGeneratorOptionsBase
     {
     }
 
-    public RecursivePowDataGeneratorOptions(int count, int number) : base(count, number)
+    public RecursivePowDataGeneratorOptions(int power, int @base) : base(power, @base)
     {
     }
 }

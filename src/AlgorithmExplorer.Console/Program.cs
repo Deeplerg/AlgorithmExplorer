@@ -151,7 +151,6 @@ switch (executorType)
         var operationsResult = await operationsExecutor.RunAsync(token, progress);
         Console.WriteLine($"Total Operations: {operationsResult.TotalOperations}, " +
                           $"Average Operations: {(long)operationsResult.AlgorithmResults.Average(x => x.Operations)}");
-
         break;
     default:
         throw new ArgumentException($"Unknown {nameof(ExecutorType)}: {executorType}");

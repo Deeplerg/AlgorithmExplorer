@@ -15,7 +15,7 @@ public abstract class PowCoordinatorBase<
     : CoordinatorBase<
         TCoordinatorOptions, TRunOptions, TResult, TDataGeneratorOptions, OperationsBenchmarkResult>
     where TRunOptions : class
-    where TCoordinatorOptions : CoordinatorOptionsBase
+    where TCoordinatorOptions : PowCoordinatorOptionsBase
     where TDataGeneratorOptions : PowDataGeneratorOptionsBase
     where TResult : OperationsResultBase
 {
@@ -53,12 +53,13 @@ public abstract class PowCoordinatorBase<
         var @base = ConstructBaseGeneratorOptions(coordinatorOptions, currentIteration);
 
         var castOptions = (PowDataGeneratorOptionsBase)emptyInheritedOptions;
-        castOptions.Count = @base.Count;
+        castOptions.Power = @base.Power;
+        castOptions.Base = @base.Base;
 
         return (TDataGeneratorOptions)castOptions;
     }
 
     protected PowDataGeneratorOptionsBase ConstructBaseGeneratorOptions(
         TCoordinatorOptions options, int currentIteration)
-        => new(currentIteration, options.IterationCount);
+        => new(currentIteration, options.Number);
 }

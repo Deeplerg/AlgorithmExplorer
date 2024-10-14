@@ -8,7 +8,6 @@ public class SimplePowDataGenerator : NumberSequenceGenerator<SimplePowDataGener
 {
     public override SimplePowOptions Generate(SimplePowDataGeneratorOptions options)
     {
-        var numbers = GenerateArray(options.Count);
-        return new SimplePowOptions(numbers, options.Number);
+        return new SimplePowOptions(options.Power, options.Base);
     }
 }

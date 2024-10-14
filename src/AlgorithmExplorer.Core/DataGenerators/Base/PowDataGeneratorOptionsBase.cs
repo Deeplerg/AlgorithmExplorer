@@ -6,17 +6,18 @@ public class PowDataGeneratorOptionsBase
     {
     }
 
-    public PowDataGeneratorOptionsBase(int count, int number)
+    public PowDataGeneratorOptionsBase(int power, int @base)
     {
-        Count = count;
-        Number = number;
+        Power = power;
+        Base = @base;
     }
 
-    public int Count { get; set; }
-    public int Number { get; set; }
+    public int Power { get; set; }
+    public int Base { get; set; }
 
-    public void Deconstruct(out int count)
+    public void Deconstruct(out int power, out int @base)
     {
-        count = Count;
+        power = Power;
+        @base = Base;
     }
 }

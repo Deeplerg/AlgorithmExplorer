@@ -6,34 +6,26 @@ public class SimplePowAlgorithm : ICancellableAlgorithm<SimplePowOptions, Simple
 {
     public CancellableResult<SimplePowResult> Run(SimplePowOptions options, CancellationToken token)
     {
-        var array = options.Elements;
-        var number = options.Number;
+        var power = options.Power;
+        var @base = options.Base;
 
-        long result = 0;
-        int totalOperations = 0;
-
-        for (int i = 0; i < array.Length; i++)
-        {
-            var (res, operations) = AuxiliaryFunction(number, array[i]);
-            result = res;
-            totalOperations += operations;
-        }
+        var (result, operations) = AuxiliaryFunction(@base, power);
 
         return new CancellableResult<SimplePowResult>
         {
-            Result = new SimplePowResult(result, totalOperations)
+            Result = new SimplePowResult(result, operations)
         };
     }
 
-    private static (long, int) AuxiliaryFunction(int degree, int number)
+    private static (long, int) AuxiliaryFunction(int @base, int power)
     {
         var count = 0;
         var result = 1;
         var operations = 0;
 
-        while (count < degree)
+        while (count < power)
         {
-            result *= number;
+            result *= @base;
             operations++;
             count++;
         }
