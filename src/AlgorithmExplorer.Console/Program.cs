@@ -8,6 +8,7 @@ using AlgorithmExplorer.Core.Benchmarking;
 using AlgorithmExplorer.Core.Benchmarking.Operations;
 using AlgorithmExplorer.Core.Benchmarking.Time;
 using AlgorithmExplorer.Infrastructure.Configuration;
+using FluentValidation.Results;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -93,10 +94,18 @@ var inputs = new DisplayableOptionInputs(displayableAlgorithmOption.AlgorithmNam
 
 
 var executorProvider = provider.GetRequiredService<IInputExecutorProvider>();
-var executor = executorProvider.GetByAlgorithm<TimeBenchmarkResult>(algorithm)!;
 
-executor.SetInput(inputs);
-var validationResult = executor.ValidateInput();
+bool isPowAlgorithm =
+    algorithm is AlgorithmType.DefaultPow
+              or AlgorithmType.QuickPow
+              or AlgorithmType.RecursivePow
+              or AlgorithmType.SimplePow;
+
+ExecutorType executorType = isPowAlgorithm ? ExecutorType.Operations : ExecutorType.Time;
+
+var executor = GetExecutor(executorType, executorProvider);
+
+var validationResult = SetInputAndValidate(executor, executorType, inputs);
 
 if (!validationResult.IsValid)
 {
@@ -113,7 +122,7 @@ var cts = new CancellationTokenSource();
 var token = cts.Token;
 //cts.CancelAfter(50);
 
-bool isPrepared = await executor.PrepareDataAsync(token);
+bool isPrepared = await PrepareDataAsync(executor, executorType, token);
 Console.WriteLine($"Prepared: {isPrepared}");
 
 if (!isPrepared)
@@ -129,6 +138,72 @@ if (shouldReportProgress)
     progress.ProgressChanged += (sender, report) => Console.WriteLine($"Done: {report.RunsCompleted}");
 }
 
-var benchmarkResult = await executor.RunAsync(token, progress);
-Console.WriteLine($"Total Time: {benchmarkResult.TotalTimeElapsed}, " +
-                  $"Average Time: {TimeSpan.FromTicks((long)benchmarkResult.AlgorithmResults.Average(x => x.TimeElapsed.Ticks))}");
+switch (executorType)
+{
+    case ExecutorType.Time:
+        var timeExecutor = (IInputExecutor<TimeBenchmarkResult>)executor;
+        var timeResult = await timeExecutor.RunAsync(token, progress);
+        Console.WriteLine($"Total Time: {timeResult.TotalTimeElapsed}, " +
+                          $"Average Time: {TimeSpan.FromTicks((long)timeResult.AlgorithmResults.Average(x => x.TimeElapsed.Ticks))}");
+        break;
+    case ExecutorType.Operations:
+        var operationsExecutor = (IInputExecutor<OperationsBenchmarkResult>)executor;
+        var operationsResult = await operationsExecutor.RunAsync(token, progress);
+        Console.WriteLine($"Total Operations: {operationsResult.TotalOperations}, " +
+                          $"Average Operations: {(long)operationsResult.AlgorithmResults.Average(x => x.Operations)}");
+
+        break;
+    default:
+        throw new ArgumentException($"Unknown {nameof(ExecutorType)}: {executorType}");
+}
+
+object GetExecutor(ExecutorType type, IInputExecutorProvider provider)
+{
+    switch (type)
+    {
+        case ExecutorType.Time:
+            return provider.GetByAlgorithm<TimeBenchmarkResult>(algorithm)!;
+        case ExecutorType.Operations:
+            return provider.GetByAlgorithm<OperationsBenchmarkResult>(algorithm)!;
+        default:
+            throw new ArgumentException($"Unknown {nameof(ExecutorType)}: {type}");
+    }
+}
+
+ValidationResult SetInputAndValidate(object executor, ExecutorType type, DisplayableOptionInputs inputs)
+{
+    switch (type)
+    {
+        case ExecutorType.Time:
+            var timeExecutor = (IInputExecutor<TimeBenchmarkResult>)executor;
+            timeExecutor.SetInput(inputs);
+            return timeExecutor.ValidateInput();
+        case ExecutorType.Operations:
+            var operationsExecutor = (IInputExecutor<OperationsBenchmarkResult>)executor;
+            operationsExecutor.SetInput(inputs);
+            return operationsExecutor.ValidateInput();
+        default:
+            throw new ArgumentException($"Unknown {nameof(ExecutorType)}: {type}");
+    }
+}
+
+async Task<bool> PrepareDataAsync(object executor, ExecutorType type, CancellationToken token)
+{
+    switch (type)
+    {
+        case ExecutorType.Time:
+            var timeExecutor = (IInputExecutor<TimeBenchmarkResult>)executor;
+            return await timeExecutor.PrepareDataAsync(token);
+        case ExecutorType.Operations:
+            var operationsExecutor = (IInputExecutor<OperationsBenchmarkResult>)executor;
+            return await operationsExecutor.PrepareDataAsync(token);
+        default:
+            throw new ArgumentException($"Unknown {nameof(ExecutorType)}: {type}");
+    }
+}
+
+enum ExecutorType
+{
+    Time,
+    Operations
+}
