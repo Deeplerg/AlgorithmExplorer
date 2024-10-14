@@ -39,10 +39,14 @@ namespace AlgorithmExplorer.Desktop
 
         public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType, string aprDeg)
         {
-            bool check = int.TryParse(aprDeg, out apprDergee);
+            bool check = int.TryParse(aprDeg, out int apprDergee1);
             if(!check)
             {
                 apprDergee = 3;
+            }
+            else
+            {
+                apprDergee = apprDergee1;
             }
             bool isPowAlgorithm =
                 alg is AlgorithmType.DefaultPow
@@ -166,7 +170,7 @@ namespace AlgorithmExplorer.Desktop
             }
 
             MyModel.Series.Add(lineSeries);
-            AddPolynomialTrendLine(lineSeries, apprDergee); // 2 - это степень полинома
+            AddPolynomialTrendLine(apprDergee); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
             for (int i = 0; i < deviationApr.Count - 1; i++)
             {
@@ -176,7 +180,7 @@ namespace AlgorithmExplorer.Desktop
         }
 
 
-        private void AddPolynomialTrendLine(LineSeries originalSeries, int degree)
+        private void AddPolynomialTrendLine( int degree)
         {
             var trendSeries = new LineSeries { Title = "Линия тренда", StrokeThickness = 2, Color = OxyColors.Red };
             //trendSeries.Points.Add(new DataPoint(0, 0));
