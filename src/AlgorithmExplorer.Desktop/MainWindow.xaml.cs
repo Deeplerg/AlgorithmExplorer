@@ -69,6 +69,7 @@ public partial class MainWindow : Window
         else
         {
             MessageBox.Show("Выберите тип шага");
+            return;
         }
         if (!(AlgListBox.SelectedItem == null))
         {
@@ -95,6 +96,7 @@ public partial class MainWindow : Window
             else if(alg.Contains("Pow") && !(int.TryParse(InputForPow.Text, out int dA1)))
             {
                 MessageBox.Show("Некорректные входные данные");
+                return; 
             }
             else
             {
@@ -109,6 +111,7 @@ public partial class MainWindow : Window
         else
         {
             MessageBox.Show("Некорректные входные данные");
+            return ;
         }
     }
 
