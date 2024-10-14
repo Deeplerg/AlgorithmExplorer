@@ -86,7 +86,7 @@ public partial class MainWindow : Window
             if (alg.Contains("Pow") && (int.TryParse(InputForPow.Text, out int dA)))
             { 
                 cts = new();
-                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType);
+                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType, TxBlApr.Text);
                 MainPlot.Model = model.MyModel;
 
                 TxBlApr.Text = model.aprPolin.ToString();
