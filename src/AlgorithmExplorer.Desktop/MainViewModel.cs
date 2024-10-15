@@ -172,9 +172,10 @@ namespace AlgorithmExplorer.Desktop
             MyModel.Series.Add(lineSeries);
             AddPolynomialTrendLine(apprDergee); // 2 - это степень полинома
             MyModel.InvalidatePlot(true); // Обновление графика
-            for (int i = 0; i < deviationApr.Count - 1; i++)
+            deviation = 0;
+            for(int q = 0; q < deviationApr.Count; q++)
             {
-                deviation += (PointsY[i] + deviationApr[i]) / 2;
+                deviation += deviationApr[q];
             }
             deviation /= PointsY.Count;
         }
@@ -203,7 +204,6 @@ namespace AlgorithmExplorer.Desktop
             stringBuilder.Append("f(x)=");
 
             deviationApr.Clear(); // Очищаем список отклонений перед новым расчетом
-            deviationApr.Add(0);  // Добавляем 0 для первой точки
 
             // Добавляем точки линии тренда
             for (int i = 0; i < xValues.Length; i++)
@@ -227,7 +227,7 @@ namespace AlgorithmExplorer.Desktop
                 // Сохраняем отклонения
                 if (i < PointsY.Count)
                 {
-                    deviationApr.Add(PointsY[i] - trendY);
+                    deviationApr.Add((Math.Abs(PointsY[i] - trendY)));
                 }
             }
 
