@@ -39,7 +39,8 @@ public class OperationsAlgorithmRunner : IOperationsAlgorithmRunner
                     operations, algorithmResult.IsCancelled, currentOptions.DataLength);
                 runResults.Add(runResult);
 
-                progress?.Report(new BenchmarkProgressReport(i + 1));
+                progress?.Report(new BenchmarkProgressReport(
+                    RunsCompleted: + 1, TotalRuns: options.TotalOptionsCount));
 
                 i++;
             }
