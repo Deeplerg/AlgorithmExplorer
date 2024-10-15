@@ -3,9 +3,9 @@ using AlgorithmExplorer.Core.DataGenerators.Base;
 
 namespace AlgorithmExplorer.Core.DataGenerators.RecursivePow;
 
-public class RecursivePowDataGenerator : NumberSequenceGenerator<RecursivePowDataGeneratorOptions, RecursivePowOptions>
+public class RecursivePowDataGenerator : IDataGenerator<RecursivePowDataGeneratorOptions, RecursivePowOptions>
 {
-    public override RecursivePowOptions Generate(RecursivePowDataGeneratorOptions options)
+    public RecursivePowOptions Generate(RecursivePowDataGeneratorOptions options)
     {
         return new RecursivePowOptions(options.Power, options.Base);
     }

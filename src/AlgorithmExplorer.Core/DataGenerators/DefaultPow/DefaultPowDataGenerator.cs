@@ -3,9 +3,9 @@ using AlgorithmExplorer.Core.DataGenerators.Base;
 
 namespace AlgorithmExplorer.Core.DataGenerators.DefaultPow;
 
-public class DefaultPowDataGenerator : NumberSequenceGenerator<DefaultPowDataGeneratorOptions, DefaultPowOptions>
+public class DefaultPowDataGenerator : IDataGenerator<DefaultPowDataGeneratorOptions, DefaultPowOptions>
 {
-    public override DefaultPowOptions Generate(DefaultPowDataGeneratorOptions options)
+    public DefaultPowOptions Generate(DefaultPowDataGeneratorOptions options)
     {
         return new DefaultPowOptions(options.Power, options.Base);
     }

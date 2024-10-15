@@ -4,9 +4,9 @@ using AlgorithmExplorer.Core.DataGenerators.Base;
 
 namespace AlgorithmExplorer.Core.DataGenerators.SimplePow;
 
-public class SimplePowDataGenerator : NumberSequenceGenerator<SimplePowDataGeneratorOptions, SimplePowOptions>
+public class SimplePowDataGenerator : IDataGenerator<SimplePowDataGeneratorOptions, SimplePowOptions>
 {
-    public override SimplePowOptions Generate(SimplePowDataGeneratorOptions options)
+    public SimplePowOptions Generate(SimplePowDataGeneratorOptions options)
     {
         return new SimplePowOptions(options.Power, options.Base);
     }
