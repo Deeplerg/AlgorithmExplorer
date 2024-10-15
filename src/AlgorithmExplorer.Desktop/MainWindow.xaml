@@ -31,11 +31,11 @@
         <Label x:Name="LableInpNOR" Content="Введите кол-во повторений" Margin="426,68,0,0" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="272"/>
         <Label x:Name="LableAlg" Content="Выберите Алгоритм" HorizontalAlignment="Left" Margin="43,10,0,0" VerticalAlignment="Top" FontFamily="Verdana"/>
         <Label Content="Введите основание &#xD;&#xA;степени" Height="64" Margin="426,141,0,0" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="248"/>
-        <Button Content="Галя,ОТМЕНА" Margin="0,781,10,0" Click="Button_Click" Height="75" VerticalAlignment="Top" HorizontalAlignment="Right" Width="196" RenderTransformOrigin="0.305,-0.928"/>
+        <Button Content="Галя,ОТМЕНА" Margin="0,781,10,0" Click="Button_Click" Height="85" VerticalAlignment="Top" HorizontalAlignment="Right" Width="196" RenderTransformOrigin="0.305,-0.928"/>
         <TextBox x:Name="InputLength" Height="37" Margin="426,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="223"/>
         <TextBox x:Name="InputNOR" Height="36" Margin="426,105,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="223"/>
         <TextBox x:Name="InputForPow" Height="39" Margin="426,205,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Verdana" HorizontalAlignment="Left" Width="223"/>
-        <Label x:Name="AprText" Height="42" Margin="0,423,331,0" VerticalAlignment="Top" Content="Функция аппроксимации" FontFamily="Verdana" RenderTransformOrigin="0.772,0.561" HorizontalAlignment="Right" Width="124"/>
+        <Label x:Name="AprText" Height="42" Margin="0,423,179,0" VerticalAlignment="Top" Content="Функция аппроксимации" FontFamily="Verdana" RenderTransformOrigin="0.772,0.561" HorizontalAlignment="Right" Width="276"/>
         <TextBox VerticalScrollBarVisibility="Auto" IsReadOnly="True" x:Name="TxBlApr" Margin="0,470,10,0" TextWrapping="Wrap" FontFamily="Verdana" Background="White" UseLayoutRounding="True" Height="273" VerticalAlignment="Top" HorizontalAlignment="Right" Width="461" DataContext="{Binding aprPolin}" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2,0,0,0"/>
         <TextBlock x:Name="TxBlDeviation" HorizontalAlignment="Right" Height="66" Margin="0,352,257,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="214" Background="White" FontFamily="Verdana"/>
         <Label Content="Отклонение" HorizontalAlignment="Right" Height="31" Margin="0,316,331,0" VerticalAlignment="Top" Width="140" FontFamily="Verdana"/>
@@ -45,8 +45,8 @@
         <Label Content="Введите начальный шаг" HorizontalAlignment="Left" Height="31" Margin="739,162,0,0" VerticalAlignment="Top" Width="240" FontFamily="Verdana"/>
         <TextBox x:Name="TxBxApr" HorizontalAlignment="Left" Height="36" Margin="1029,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="212" FontFamily="Verdana"/>
         <Label Content="Введите степень аппроксимации" HorizontalAlignment="Left" Height="33" Margin="1029,10,0,0" VerticalAlignment="Top" Width="170" FontFamily="Verdana"/>
-        <ProgressBar Name="AlgorithmProgressBar" Minimum="0" Height="46" Margin="1035,258,20,0" VerticalAlignment="Top"/>
-        <Label Content="Прогресс:" Margin="1035,226,401,0" VerticalAlignment="Top" RenderTransformOrigin="0.255,0.695"/>
-        <Label Content="Label" Name="ProgressLabel" Margin="1107,226,355,0" VerticalAlignment="Top"/>
+        <ProgressBar Name="AlgorithmProgressBar" Minimum="0" Height="46" Margin="0,258,20,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="445"/>
+        <Label Content="Прогресс:" Margin="0,226,374,0" VerticalAlignment="Top" RenderTransformOrigin="0.255,0.695" HorizontalAlignment="Right" Width="91"/>
+        <Label Content="Label" Name="ProgressLabel" Margin="1131,226,331,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
