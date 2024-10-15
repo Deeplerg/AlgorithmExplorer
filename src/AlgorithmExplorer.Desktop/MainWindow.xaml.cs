@@ -18,6 +18,7 @@ using AlgorithmExplorer.Infrastructure.Configuration;
 using System.Configuration;
 using AlgorithmExplorer.Application.Providers.InputExecutors;
 using AlgorithmExplorer.Application.ExecutionCoordinators.Base;
+using AlgorithmExplorer.Core.Benchmarking;
 
 namespace AlgorithmExplorer.Desktop;
 
@@ -29,6 +30,8 @@ public partial class MainWindow : Window
     private IInputExecutorProvider Provides;
 
     private CancellationTokenSource cts = new();
+
+    private Progress<BenchmarkProgressReport> _progress = new Progress<BenchmarkProgressReport>();
 
     public MainWindow(IInputExecutorProvider input)
     {
@@ -55,6 +58,16 @@ public partial class MainWindow : Window
         }
 
         TxBxApr.Text = "3";
+        ProgressLabel.Content = string.Empty;
+
+        _progress.ProgressChanged += (sender, report) =>
+        {
+            ProgressLabel.Content = $"{report.RunsCompleted}/{report.TotalRuns}";
+
+            if ((int)AlgorithmProgressBar.Maximum != report.TotalRuns)
+                AlgorithmProgressBar.Maximum = report.TotalRuns;
+            AlgorithmProgressBar.Value = report.RunsCompleted;
+        };
     }
 
     private async void StartButton_Click(object sender, RoutedEventArgs e)
@@ -89,7 +102,16 @@ public partial class MainWindow : Window
             && !(alg.Contains("Pow") && !int.TryParse(InputForPow.Text, out int dA)))
         {
             cts = new();
-            await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType, TxBxApr.Text);
+            await model.GetGraphik(
+                InputLength.Text,
+                algorithmType,
+                InputNOR.Text,
+                Provides, cts.Token,
+                InputForPow.Text,
+                TxBxStep.Text,
+                stepType,
+                TxBxApr.Text,
+                _progress);
             MainPlot.Model = model.MyModel;
 
             TxBlApr.Text = model.aprPolin.ToString();

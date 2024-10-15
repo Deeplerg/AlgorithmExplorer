@@ -13,6 +13,7 @@ using OxyPlot.Axes;
 using System.Text;
 using AlgorithmExplorer.Application.ExecutionCoordinators.Base;
 using AlgorithmExplorer.Application.InputExecutors;
+using AlgorithmExplorer.Core.Benchmarking;
 using AlgorithmExplorer.Core.Benchmarking.Operations;
 using AlgorithmExplorer.Core.Benchmarking.Time;
 using FluentValidation.Results;
@@ -37,7 +38,17 @@ namespace AlgorithmExplorer.Desktop
             deviationApr.Add(0);
         }
 
-        public async Task GetGraphik(string vectorLength, AlgorithmType alg, string count, IInputExecutorProvider inputData, CancellationToken token, string inpForPow, string inpStartStep, string inpStepType, string aprDeg)
+        public async Task GetGraphik(
+            string vectorLength,
+            AlgorithmType alg,
+            string count,
+            IInputExecutorProvider inputData,
+            CancellationToken token,
+            string inpForPow,
+            string inpStartStep,
+            string inpStepType,
+            string aprDeg,
+            IProgress<BenchmarkProgressReport>? progress = null)
         {
             bool check = int.TryParse(aprDeg, out int apprDergee1);
             if(!check)
@@ -96,7 +107,7 @@ namespace AlgorithmExplorer.Desktop
                 {
                     case ExecutorType.Time:
                         var timeExecutor = (IInputExecutor<TimeBenchmarkResult>)executor;
-                        var timeResult = await timeExecutor.RunAsync(token);
+                        var timeResult = await timeExecutor.RunAsync(token, progress);
                         mainList.Add(timeResult.AlgorithmResults
                             .Select(x =>
                                 new NumberAlgorithmRunResult(
@@ -106,7 +117,7 @@ namespace AlgorithmExplorer.Desktop
                         break;
                     case ExecutorType.Operations:
                         var operationsExecutor = (IInputExecutor<OperationsBenchmarkResult>)executor;
-                        var operationsResult = await operationsExecutor.RunAsync(token);
+                        var operationsResult = await operationsExecutor.RunAsync(token, progress);
                         mainList.Add(operationsResult.AlgorithmResults
                             .Select(x =>
                                 new NumberAlgorithmRunResult(
