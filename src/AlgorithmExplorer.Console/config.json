@@ -236,6 +236,20 @@
             "displayName": "StepType"
           }
         ]
+      },
+      {
+        "algorithmName": "subsetSum",
+        "displayableCoordinatorOptions": [
+          {
+            "displayName": "Iterations"
+          },
+          {
+            "displayName": "Step"
+          },
+          {
+            "displayName": "StepType"
+          }
+        ]
       }
     ]
   }

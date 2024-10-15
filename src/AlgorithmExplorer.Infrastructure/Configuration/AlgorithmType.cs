@@ -18,5 +18,6 @@ public enum AlgorithmType
     MatrixMultiplication,
     Kadane,
     Const,
-    LIS
+    LIS,
+    SubsetSum
 }

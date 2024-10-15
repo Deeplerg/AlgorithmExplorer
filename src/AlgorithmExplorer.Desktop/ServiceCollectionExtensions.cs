@@ -14,6 +14,7 @@ using AlgorithmExplorer.Application.ExecutionCoordinators.QuickPow;
 using AlgorithmExplorer.Application.ExecutionCoordinators.QuickSort;
 using AlgorithmExplorer.Application.ExecutionCoordinators.RecursivePow;
 using AlgorithmExplorer.Application.ExecutionCoordinators.SimplePow;
+using AlgorithmExplorer.Application.ExecutionCoordinators.SubsetSum;
 using AlgorithmExplorer.Application.ExecutionCoordinators.Sum;
 using AlgorithmExplorer.Application.ExecutionCoordinators.TimSort;
 using AlgorithmExplorer.Application.InputExecutors;
@@ -37,6 +38,7 @@ using AlgorithmExplorer.Core.Algorithms.QuickPow;
 using AlgorithmExplorer.Core.Algorithms.QuickSort;
 using AlgorithmExplorer.Core.Algorithms.RecursivePow;
 using AlgorithmExplorer.Core.Algorithms.SimplePow;
+using AlgorithmExplorer.Core.Algorithms.SubsetSum;
 using AlgorithmExplorer.Core.Algorithms.Sum;
 using AlgorithmExplorer.Core.Algorithms.TimSort;
 using AlgorithmExplorer.Core.Benchmarking.Operations;
@@ -56,6 +58,7 @@ using AlgorithmExplorer.Core.DataGenerators.QuickPow;
 using AlgorithmExplorer.Core.DataGenerators.QuickSort;
 using AlgorithmExplorer.Core.DataGenerators.RecursivePow;
 using AlgorithmExplorer.Core.DataGenerators.SimplePow;
+using AlgorithmExplorer.Core.DataGenerators.SubsetSum;
 using AlgorithmExplorer.Core.DataGenerators.Sum;
 using AlgorithmExplorer.Core.DataGenerators.TimSort;
 using FluentValidation;
@@ -83,7 +86,8 @@ public static class ServiceCollectionExtensions
             .AddMatrixMultiplicationAlgorithm()
             .AddKadaneAlgorithm()
             .AddConstAlgorithm()
-            .AddLISAlgorithm();
+            .AddLISAlgorithm()
+            .AddSubsetSumAlgorithm();
     }
 
     public static IServiceCollection AddSumAlgorithm(this IServiceCollection services)
@@ -500,6 +504,31 @@ public static class ServiceCollectionExtensions
         services.AddTransient<
             IValidator<LISCoordinatorOptions>,
             LISCoordinatorOptionsValidator>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddSubsetSumAlgorithm(this IServiceCollection services)
+    {
+        services.AddTransient<
+            ICancellableAlgorithm<SubsetSumOptions, SubsetSumResult>,
+            SubsetSumAlgorithm>();
+
+        services.AddTransient<
+            IDataGenerator<SubsetSumDataGeneratorOptions, SubsetSumOptions>,
+            SubsetSumDataGenerator>();
+
+        services.AddTransient<
+            ICancellableCoordinator<SubsetSumCoordinatorOptions, TimeBenchmarkResult>,
+            SubsetSumCoordinator>();
+
+        services.AddTransient<
+            IMapper<DisplayableOptionInputs, SubsetSumCoordinatorOptions>,
+            SubsetSumCoordinatorOptionsMapper>();
+
+        services.AddTransient<
+            IValidator<SubsetSumCoordinatorOptions>,
+            SubsetSumCoordinatorOptionsValidator>();
 
         return services;
     }
