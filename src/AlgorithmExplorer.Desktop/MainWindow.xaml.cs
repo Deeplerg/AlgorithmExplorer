@@ -82,36 +82,23 @@ public partial class MainWindow : Window
             return;
         }
         MainViewModel model = new MainViewModel();
-        if (int.TryParse(InputLength.Text, out int length) && int.TryParse(InputNOR.Text, out int nOR))
+
+        if (int.TryParse(InputLength.Text, out int length) && int.TryParse(InputNOR.Text, out int nOR)
+            && int.TryParse(TxBxApr.Text, out int approximationPower)
+            && int.TryParse(TxBxStep.Text, out int step)
+            && !(alg.Contains("Pow") && !int.TryParse(InputForPow.Text, out int dA)))
         {
-            if (alg.Contains("Pow") && (int.TryParse(InputForPow.Text, out int dA)))
-            { 
-                cts = new();
-                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType, TxBxApr.Text);
-                MainPlot.Model = model.MyModel;
+            cts = new();
+            await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType, TxBxApr.Text);
+            MainPlot.Model = model.MyModel;
 
-                TxBlApr.Text = model.aprPolin.ToString();
-                TxBlDeviation.Text = model.deviation.ToString();
-            }
-            else if(alg.Contains("Pow") && !(int.TryParse(InputForPow.Text, out int dA1)))
-            {
-                MessageBox.Show("Некорректные входные данные");
-                return; 
-            }
-            else
-            {
-                cts = new();
-                await model.GetGraphik(InputLength.Text, algorithmType, InputNOR.Text, Provides, cts.Token, InputForPow.Text, TxBxStep.Text, stepType, TxBxApr.Text);
-                MainPlot.Model = model.MyModel;
-
-                TxBlApr.Text = model.aprPolin.ToString();
-               TxBlDeviation.Text = model.deviation.ToString();
-            }
+            TxBlApr.Text = model.aprPolin.ToString();
+            TxBlDeviation.Text = model.deviation.ToString();
         }
         else
         {
             MessageBox.Show("Некорректные входные данные");
-            return ;
+            return;
         }
     }
 
