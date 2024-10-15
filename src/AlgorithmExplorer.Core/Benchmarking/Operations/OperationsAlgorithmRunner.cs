@@ -40,7 +40,7 @@ public class OperationsAlgorithmRunner : IOperationsAlgorithmRunner
                 runResults.Add(runResult);
 
                 progress?.Report(new BenchmarkProgressReport(
-                    RunsCompleted: i + 1, TotalRuns: options.TotalOptionsCount));
+                    RunsCompleted: i + 1, TotalRuns: options.TotalOptionsCount + 1));
 
                 i++;
             }
