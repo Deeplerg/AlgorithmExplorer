@@ -131,8 +131,8 @@ namespace AlgorithmExplorer.Desktop
             }
 
             double[] list = new double[mainList[0].Count];
-            arrX = new double[mainList[0].Count + 1];
-            arrX[0] = 0;
+            arrX = new double[mainList[0].Count];
+
             for (int j = 0; j < mainList[0].Count; j++)
             {
                 list[j] = 0;
@@ -141,7 +141,7 @@ namespace AlgorithmExplorer.Desktop
                     if (i < mainList.Count && j < mainList[i].Count)
                     {
                         list[j] += mainList[i][j].Number; // Суммируем время
-                        arrX[j + 1] = mainList[i][j].DataLength;
+                        arrX[j] = mainList[i][j].DataLength;
                     }
                 }
                 list[j] /= runCount; // Усредняем
@@ -177,7 +177,7 @@ namespace AlgorithmExplorer.Desktop
             PointsY[0] = 0;
             for (int i = 0; i < PointsY.Count; i++)
             {
-                lineSeries.Points.Add(new DataPoint(arrX[i + 1], PointsY[i]));
+                lineSeries.Points.Add(new DataPoint(arrX[i], PointsY[i]));
             }
 
             MyModel.Series.Add(lineSeries);
@@ -198,8 +198,6 @@ namespace AlgorithmExplorer.Desktop
             //trendSeries.Points.Add(new DataPoint(0, 0));
             // Используем динамический шаг
             List<double> yValuesList = new List<double>();
-            double zero = 0;
-            yValuesList.Add(zero);
 
             for (int i = 0; i < PointsY.Count; i++)
             {
