@@ -45,8 +45,8 @@
         <Label Content="Введите начальный шаг" HorizontalAlignment="Left" Height="31" Margin="739,162,0,0" VerticalAlignment="Top" Width="240" FontFamily="Verdana"/>
         <TextBox x:Name="TxBxApr" HorizontalAlignment="Left" Height="36" Margin="1029,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="212" FontFamily="Verdana"/>
         <Label Content="Введите степень аппроксимации" HorizontalAlignment="Left" Height="33" Margin="1029,10,0,0" VerticalAlignment="Top" Width="170" FontFamily="Verdana"/>
-        <ProgressBar Name="AlgorithmProgressBar" Minimum="0" Height="46" Margin="0,258,20,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="445"/>
-        <Label Content="Прогресс:" Margin="0,226,374,0" VerticalAlignment="Top" RenderTransformOrigin="0.255,0.695" HorizontalAlignment="Right" Width="91"/>
-        <Label Content="Label" Name="ProgressLabel" Margin="0,226,272,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="97"/>
+        <ProgressBar Name="AlgorithmProgressBar" Minimum="0" Height="46" Margin="0,260,26,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="445"/>
+        <Label Content="Прогресс:" Margin="0,224,380,0" VerticalAlignment="Top" RenderTransformOrigin="0.255,0.695" HorizontalAlignment="Right" Width="91"/>
+        <Label Content="Label" Name="ProgressLabel" Margin="0,224,283,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="97"/>
     </Grid>
 </Window>
